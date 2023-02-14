@@ -1,10 +1,10 @@
 import './tools.scss';
 
-const Tools = () => {
+const Tools = ({ updateIsActiveModal }) => {
     return (
         <div className="grid__item grid__item1 tools">
           <div className="minus">-</div>
-          <div className="plus">+</div>
+          <div onClick={() => updateIsActiveModal(true)} className="plus">+</div>
         </div>
     )
 }

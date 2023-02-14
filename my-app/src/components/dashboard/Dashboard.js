@@ -1,17 +1,33 @@
-import "./dashboard.scss";
+import { useState } from "react";
 
 import Preview from "../preview/Preview";
 import Time from "../time/Time";
 import Task from "../task/Task";
 import Date from "../date/Date";
 import Tools from "../tools/Tools";
+import Modal from "../modal/Modal";
+
+import "./dashboard.scss";
 
 const Dashboard = () => {
+  const [isActiveModal, setIsActiveModal] = useState(false);
+
+  const updateIsActiveModal = (bool) => {
+    setIsActiveModal(bool);
+  }
+
   return (
     <main>
       <Preview/>
       <div className="wrapper__grid">
-        <Tools />
+        <Tools updateIsActiveModal={updateIsActiveModal} />
+        {
+          isActiveModal 
+          ? 
+          <Modal updateIsActiveModal={updateIsActiveModal} />
+          :
+          null
+        }
 
         <Date dateCurrent={"7, Mon"} />
         <Date dateCurrent={"8, Tue"} />
@@ -20,6 +36,12 @@ const Dashboard = () => {
         <Date dateCurrent={"11, Fri"} />
         <Date dateCurrent={"12, Sat"} />
         <Date dateCurrent={"13, Sun"} />
+
+        <Time timeTask={"7:00"} />
+        <Time timeTask={"7:00"} />
+        <Time timeTask={"7:00"} />
+        <Time timeTask={"7:00"} />
+        <Time timeTask={"7:00"} />
 
         <div className="grid__item grid__item__content1">
           <Task />
