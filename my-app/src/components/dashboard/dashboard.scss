@@ -1,0 +1,77 @@
+$colCount: 7;
+$rowCount: 52;
+
+main{
+    margin: 30px 20px;
+    font-family: 'Play', sans-serif;
+}
+
+.wrapper__grid{
+    margin: 20px 0 0 0;
+    display: grid;
+    grid-template-columns: minmax(60px, 90px) repeat($colCount, [col] minmax(90px, 2fr));
+    grid-template-rows: repeat($rowCount, [row] minmax(40px, 1fr));
+    gap: 3px;
+    border-radius: 10px;
+    background-color: rgb(236, 236, 236);
+    padding: 10px;
+}
+
+.grid__item{
+    background-color: rgb(219, 219, 219);
+    border-radius: 10px;
+    padding: 5px;
+}
+
+.tools {
+    font-size: 30px;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.day {
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.info {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.grid__item__content1 {
+    grid-column: col 1;
+    grid-row: row 2 / row $rowCount + 1;
+}
+
+.grid__item__content2 {
+    grid-column: col 2;
+    grid-row: row 2 / row $rowCount + 1;
+}
+
+.grid__item__content3 {
+    grid-column: col 3;
+    grid-row: row 2 / row $rowCount + 1;
+}
+
+.grid__item__content4 {
+    grid-column: col 4;
+    grid-row: row 2 / row $rowCount + 1;
+}
+
+.grid__item__content5 {
+    grid-column: col 5;
+    grid-row: row 2 / row $rowCount + 1;
+}
+
+.grid__item__content6 {
+    grid-column: col 6;
+    grid-row: row 2 / row $rowCount + 1;
+}
+
+.grid__item__content7 {
+    grid-column: col 7;
+    grid-row: row 2 / row $rowCount + 1;
+}

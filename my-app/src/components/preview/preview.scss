@@ -1,0 +1,17 @@
+.preview{
+    font-size: 20px;
+    text-align: center;
+    font-family: 'Roboto', sans-serif;
+    color: #600686;
+
+    .preview__content {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 10px;
+
+        img:hover {
+            cursor: pointer;
+        }
+    }
+}

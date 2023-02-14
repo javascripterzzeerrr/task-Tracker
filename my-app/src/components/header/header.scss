@@ -1,0 +1,46 @@
+header{
+    font-family: 'Play', sans-serif;
+    border-bottom: 1px solid #ebebeb;
+
+    .header__content{
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin: 0 20px;
+        font-family: 'Play', sans-serif;
+
+        .header__content__logo{
+            .title {
+                text-transform: uppercase;
+                color: #9400D3;
+                font-size: 28px;
+            }
+        }
+
+        .header__content__nav{
+            .menu{
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                gap: 45px;
+                text-transform: uppercase;
+
+                .menu__item{
+                    list-style-type: none;
+                    font-size: 16px;
+                    font-family: 'Roboto', sans-serif;
+
+                    &:hover{
+                        cursor: pointer;
+                        color: rgb(138, 138, 138);
+                        transition: 0.5s;
+                    }
+
+                    &:not(:hover){
+                        transition: 0.5s;
+                    }
+                }
+            }
+        }
+    }
+}
