@@ -1,16 +1,35 @@
-import { useMemo } from 'react';
+import { useEffect, useCallback } from "react";
+import { useDispatch, useSelector } from "react-redux";
+
+import { deleteTask, deleteFlag } from "../../actions/index";
+import { changeFlagSelector } from "../../selectors/index";
 
 import './task.scss';
 
-const Task = ({ title, desc, startTime, doneTime }) => {
-  console.log("RENDER Task")
-  const colors = ["#9400D3", "#c5a804", "#099e2e", "#039dcc", "#a00854"];
+import trash from '../../img/trash-can.png';
 
-  const randomColor = useMemo(() => {
-    return Math.floor(Math.random() * (colors.length + 1));
-  }, [title, desc, startTime, doneTime]);
+const Task = ({ id, title, desc, startTime, doneTime, color }) => {
+  const isChangeFlag = useSelector(changeFlagSelector);
+  
+  console.log("isChangeFlag ", isChangeFlag);
 
-  const color = colors[randomColor];
+  const dispatch = useDispatch();
+
+  const handleClickOutTask = useCallback((event) => {
+    const taskBlock = document.querySelector(".task");
+
+    console.log("isChangeFlag ", isChangeFlag);
+
+    if (!event.path.includes(taskBlock) && isChangeFlag) {
+      dispatch(deleteFlag());
+    }
+  }, []);
+
+  useEffect(() => {
+    document.addEventListener('click', handleClickOutTask);
+
+    return () => document.removeEventListener('click', handleClickOutTask);
+  }, [isChangeFlag, handleClickOutTask]);
 
   return (
       <div className="task">
@@ -23,6 +42,13 @@ const Task = ({ title, desc, startTime, doneTime }) => {
               <div className="task__time">{ startTime + "-" + doneTime }</div>
             </div>
           </div>
+          {
+            isChangeFlag 
+            ?
+            <img onClick={() => dispatch(deleteTask(id))} className="btn-close" src={trash} alt="trash" />
+            :
+            null
+          }
       </div>
   )
 }

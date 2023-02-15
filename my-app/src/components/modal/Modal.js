@@ -1,29 +1,34 @@
 import { useState } from "react";
+import { useDispatch } from "react-redux";
+
+import { addTask } from "../../actions/index";
+
+import { v4 as uuidv4 } from 'uuid';
+
+import randomColor from "../../utils/randomColor";
 
 import "./modal.scss";
 
-const Modal = ({ updateIsActiveModal, addTask }) => {
-  console.log("RENDER Modal")
+const Modal = ({ updateIsActiveModal }) => {
   const [title, setTitle] = useState(null);
   const [desc, setDesc] = useState(null);
   const [startTime, setStartTime] = useState(null);
   const [doneTime, setDoneTime] = useState(null);
 
+  const dispatch = useDispatch();
+
   const adding = () => {
     if (title.length > 1 && startTime && doneTime) {
-      console.log({
+      const taskID = uuidv4();
+
+      dispatch(addTask({
+        id: taskID,
         title,
         desc,
         startTime,
-        doneTime
-      });
-      addTask({
-        title,
-        desc,
-        startTime,
-        doneTime
-      });
-      console.log("add task");
+        doneTime,
+        color: randomColor()
+      }));
       updateIsActiveModal(false);
     }
   };
@@ -32,17 +37,15 @@ const Modal = ({ updateIsActiveModal, addTask }) => {
     return (string.match(/\d\d:\d\d/).length > 0)
   };
 
-  const onUpdateStartTime = (e) => {
+  const onUpdateTime = (e) => {
     let inpStr = e.target.value;
     if (isValidTime(inpStr)) {
+      if (e.target.name === "startTime") {
         setStartTime(inpStr);
-    }
-  }
-
-  const onUpdateDoneTime = (e) => {
-    let inpStr = e.target.value;
-    if (isValidTime(inpStr)) {
+      }
+      else if (e.target.name === "doneTime") {
         setDoneTime(inpStr);
+      }
     }
   }
 
@@ -67,7 +70,8 @@ const Modal = ({ updateIsActiveModal, addTask }) => {
           />
           <div className="time">Выберити время начала (в формате XX:XX)</div>
           <input
-            onChange={e => onUpdateStartTime(e)}
+            onChange={e => onUpdateTime(e)}
+            name="startTime"
             type="text"
             className="title__add"
             placeholder="Example 00:00"
@@ -76,9 +80,9 @@ const Modal = ({ updateIsActiveModal, addTask }) => {
             Укажите продолжительность задача (в формате XX:XX)
           </div>
           <input
-            onChange={e => onUpdateDoneTime(e)}
+            onChange={e => onUpdateTime(e)}
+            name="doneTime"
             type="text"
-            name="city"
             list="cityname"
             placeholder="Example 01:00"
           />

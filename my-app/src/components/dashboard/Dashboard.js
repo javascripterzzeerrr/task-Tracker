@@ -1,6 +1,7 @@
 import { useState, useMemo } from "react";
+import { useSelector } from "react-redux";
 
-import { v4 as uuidv4 } from 'uuid';
+import * as taskSelectors from "../../selectors/index";
 
 import Preview from "../preview/Preview";
 import Time from "../time/Time";
@@ -12,23 +13,18 @@ import Modal from "../modal/Modal";
 import "./dashboard.scss";
 
 const Dashboard = () => {
-  console.log("RENDER Dashboard")
   const [isActiveModal, setIsActiveModal] = useState(false);
-  const [tasks, setTasks] = useState([]);
+  const tasks = useSelector(taskSelectors.tasksListSelector);
+
+  console.log("task list ", tasks);
 
   const updateIsActiveModal = (bool) => {
     setIsActiveModal(bool);
   }
 
-  const addTask = (task) => {
-    setTasks(
-      [...tasks, task]
-    );
-  }
-
   const renderTask = useMemo(() => {
-    const content = tasks.map(({ title, desc, startTime, doneTime }) => {
-      return <Task key={uuidv4()} title={title} desc={desc} startTime={startTime} doneTime={doneTime} />
+    const content = tasks.map(({ id, title, desc, startTime, doneTime, color }) => {
+      return <Task key={id} id={id} title={title} desc={desc} startTime={startTime} doneTime={doneTime} color={color} />
     })
 
     return content;
@@ -44,7 +40,7 @@ const Dashboard = () => {
         {
           isActiveModal 
           ? 
-          <Modal updateIsActiveModal={updateIsActiveModal} addTask={addTask} />
+          <Modal updateIsActiveModal={updateIsActiveModal} />
           :
           null
         }
@@ -64,9 +60,7 @@ const Dashboard = () => {
         <Time timeTask={"7:00"} />
 
         <div className="grid__item grid__item__content1">
-          {
-            content
-          }
+          { content }
         </div>
 
         <div className="grid__item grid__item__content2">
