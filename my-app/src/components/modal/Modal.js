@@ -2,20 +2,34 @@ import { useState } from "react";
 
 import "./modal.scss";
 
-const Modal = ({ updateIsActiveModal }) => {
+const Modal = ({ updateIsActiveModal, addTask }) => {
+  console.log("RENDER Modal")
   const [title, setTitle] = useState(null);
   const [desc, setDesc] = useState(null);
   const [startTime, setStartTime] = useState(null);
   const [doneTime, setDoneTime] = useState(null);
 
-  const closeBtn = () => {
-    if (title.length > 2 && startTime && doneTime) {
+  const adding = () => {
+    if (title.length > 1 && startTime && doneTime) {
+      console.log({
+        title,
+        desc,
+        startTime,
+        doneTime
+      });
+      addTask({
+        title,
+        desc,
+        startTime,
+        doneTime
+      });
+      console.log("add task");
       updateIsActiveModal(false);
     }
   };
 
   const isValidTime = (string) => {
-    return (string.match( /\d\d:\d\d/ ).length > 0)
+    return (string.match(/\d\d:\d\d/).length > 0)
   };
 
   const onUpdateStartTime = (e) => {
@@ -46,22 +60,23 @@ const Modal = ({ updateIsActiveModal }) => {
           />
           <div className="time">Опишите задачу</div>
           <textarea
+            onChange={e => setDesc(e.target.value)}
             type="text"
             className="desc__add"
             placeholder="Briefly describe your task"
           />
-          <div className="time">Выберити время начала (в формате xx:xx)</div>
+          <div className="time">Выберити время начала (в формате XX:XX)</div>
           <input
-            onChange={onUpdateStartTime}
+            onChange={e => onUpdateStartTime(e)}
             type="text"
             className="title__add"
             placeholder="Example 00:00"
           />
           <div className="time">
-            Укажите продолжительность задача (в формате xx:xx)
+            Укажите продолжительность задача (в формате XX:XX)
           </div>
           <input
-            onChange={onUpdateDoneTime}
+            onChange={e => onUpdateDoneTime(e)}
             type="text"
             name="city"
             list="cityname"
@@ -72,7 +87,7 @@ const Modal = ({ updateIsActiveModal }) => {
             <option value={1}></option>
             <option value="полчаса"></option>
           </datalist>
-          <button onClick={closeBtn} className="btn">Add</button>
+          <button onClick={adding} className="btn">Add</button>
         </div>
         <button onClick={() => updateIsActiveModal(false)} className="btn-close">
           X

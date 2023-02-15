@@ -12,16 +12,17 @@
     .modal__window {
         position: relative;
         z-index: 2;
-        width: 550px;
+        max-width: 550px;
+        min-width: 400px;
         border-radius: 10px;
         box-shadow: 0 10px 15px rgba(0,0,0,.4);
         background-color: #fff;
-        padding: 50px;
+        padding: 30px;
 
         .modal__window__add {
             display: flex;
             flex-direction: column;
-            gap: 30px;
+            gap: 25px;
 
             input, textarea {
                 border-top: none;
@@ -47,7 +48,8 @@
                 outline: none;
                 -moz-appearance: none;
                 border: 1px solid #999;
-                height: 300px;
+                max-height: 300px;
+                min-height: 150px;
                 resize: none;
             }
 

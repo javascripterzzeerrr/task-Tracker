@@ -1,4 +1,6 @@
-import { useState } from "react";
+import { useState, useMemo } from "react";
+
+import { v4 as uuidv4 } from 'uuid';
 
 import Preview from "../preview/Preview";
 import Time from "../time/Time";
@@ -10,11 +12,29 @@ import Modal from "../modal/Modal";
 import "./dashboard.scss";
 
 const Dashboard = () => {
+  console.log("RENDER Dashboard")
   const [isActiveModal, setIsActiveModal] = useState(false);
+  const [tasks, setTasks] = useState([]);
 
   const updateIsActiveModal = (bool) => {
     setIsActiveModal(bool);
   }
+
+  const addTask = (task) => {
+    setTasks(
+      [...tasks, task]
+    );
+  }
+
+  const renderTask = useMemo(() => {
+    const content = tasks.map(({ title, desc, startTime, doneTime }) => {
+      return <Task key={uuidv4()} title={title} desc={desc} startTime={startTime} doneTime={doneTime} />
+    })
+
+    return content;
+  }, [tasks]);
+
+  const content = tasks.length > 0 ? renderTask : null;
 
   return (
     <main>
@@ -24,7 +44,7 @@ const Dashboard = () => {
         {
           isActiveModal 
           ? 
-          <Modal updateIsActiveModal={updateIsActiveModal} />
+          <Modal updateIsActiveModal={updateIsActiveModal} addTask={addTask} />
           :
           null
         }
@@ -44,34 +64,27 @@ const Dashboard = () => {
         <Time timeTask={"7:00"} />
 
         <div className="grid__item grid__item__content1">
-          <Task />
+          {
+            content
+          }
         </div>
 
         <div className="grid__item grid__item__content2">
-          <Task />
-          <Task />
         </div>
 
         <div className="grid__item grid__item__content3">
-          <Task />
         </div>
 
         <div className="grid__item grid__item__content4">
-          <Task />
         </div>
 
         <div className="grid__item grid__item__content5">
-          <Task />
         </div>
 
         <div className="grid__item grid__item__content6">
-          <Task />
-          <Task />
-          <Task />
         </div>
 
         <div className="grid__item grid__item__content7">
-          <Task />
         </div>
 
       
