@@ -9,6 +9,8 @@ import Task from "../task/Task";
 import Date from "../date/Date";
 import Tools from "../tools/Tools";
 import Modal from "../modal/Modal";
+import Column from "../column/Column";
+import GridWrapper from "../gridWrapper/GridWrapper";
 
 import "./dashboard.scss";
 
@@ -16,24 +18,22 @@ const Dashboard = () => {
   const [isActiveModal, setIsActiveModal] = useState(false);
   const tasks = useSelector(taskSelectors.tasksListSelector);
   const tasksTime = useSelector(taskSelectors.tasksTimeList);
+  const rows = useSelector(taskSelectors.dashboardRows);
 
   const updateIsActiveModal = (bool) => {
     setIsActiveModal(bool);
   }
 
   const renderTask = useMemo(() => {
-    const content = tasks.map(({ id, title, desc, startTime, doneTime, color }) => {
+    return tasks.map(({ id, title, desc, startTime, doneTime, color }) => {
       return <Task key={id} id={id} title={title} desc={desc} startTime={startTime} doneTime={doneTime} color={color} />
-    })
-
-    return content;
+    });
   }, [tasks]);
 
   const renderTimeList = useMemo(() => {
     return tasksTime.map(taskTime => {
-      console.log("taskTime ", taskTime)
       return <Time key={taskTime.id} startTime={taskTime.startTime} doneTime={taskTime.doneTime} />;
-    })
+    });
   }, [tasksTime]);
 
   const content = tasks.length > 0 ? renderTask : null;
@@ -42,7 +42,7 @@ const Dashboard = () => {
   return (
     <main>
       <Preview/>
-      <div className="wrapper__grid">
+      <GridWrapper rows={rows}>
         <Tools updateIsActiveModal={updateIsActiveModal} />
         {
           isActiveModal 
@@ -64,30 +64,15 @@ const Dashboard = () => {
           timeList
         }
 
-        <div className="grid__item grid__item__content1">
-          { content }
-        </div>
-
-        <div className="grid__item grid__item__content2">
-        </div>
-
-        <div className="grid__item grid__item__content3">
-        </div>
-
-        <div className="grid__item grid__item__content4">
-        </div>
-
-        <div className="grid__item grid__item__content5">
-        </div>
-
-        <div className="grid__item grid__item__content6">
-        </div>
-
-        <div className="grid__item grid__item__content7">
-        </div>
-
+        <Column number={1}>{content}</Column>
+        <Column number={2}></Column>
+        <Column number={3}></Column>
+        <Column number={4}></Column>
+        <Column number={5}></Column>
+        <Column number={6}></Column>
+        <Column number={7}></Column>
       
-    </div>
+      </GridWrapper>
     </main>
   );
 }
