@@ -10,20 +10,17 @@ import trash from '../../img/trash-can.png';
 
 const Task = ({ id, title, desc, startTime, doneTime, color }) => {
   const isChangeFlag = useSelector(changeFlagSelector);
-  
-  console.log("isChangeFlag ", isChangeFlag);
 
   const dispatch = useDispatch();
 
   const handleClickOutTask = useCallback((event) => {
     const taskBlock = document.querySelector(".task");
+    const minusBlock = document.querySelector(".minus");
 
-    console.log("isChangeFlag ", isChangeFlag);
-
-    if (!event.path.includes(taskBlock) && isChangeFlag) {
+    if (!event.path.includes(taskBlock) && !event.path.includes(minusBlock) && isChangeFlag === true) {
       dispatch(deleteFlag());
     }
-  }, []);
+  }, [isChangeFlag]);
 
   useEffect(() => {
     document.addEventListener('click', handleClickOutTask);

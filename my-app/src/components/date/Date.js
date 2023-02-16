@@ -2,8 +2,8 @@ import './date.scss';
 
 const Date = ({ dateCurrent }) => {
     return (
-        <div classname="grid__item info grid__item2">
-            <p classname="day">{ dateCurrent }</p>
+        <div className="day">
+            <p style={{"fontWeight": "bold", "color": "#8a8a8a"}}>{ dateCurrent }</p>
         </div>
     )
 }

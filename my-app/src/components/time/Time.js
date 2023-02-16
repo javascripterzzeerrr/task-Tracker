@@ -1,8 +1,11 @@
 import './Time.scss';
 
-const Time = ({ timeTask }) => {
+const Time = ({ startTime, doneTime }) => {
     return (
-        <div className="grid__item info">{ timeTask }</div>
+        <>
+            <div className="grid__item info">{ startTime }</div>
+            <div className="grid__item info">{ doneTime }</div>
+        </>
     )
 }
 

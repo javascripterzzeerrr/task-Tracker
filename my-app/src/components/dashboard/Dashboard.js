@@ -15,8 +15,7 @@ import "./dashboard.scss";
 const Dashboard = () => {
   const [isActiveModal, setIsActiveModal] = useState(false);
   const tasks = useSelector(taskSelectors.tasksListSelector);
-
-  console.log("task list ", tasks);
+  const tasksTime = useSelector(taskSelectors.tasksTimeList);
 
   const updateIsActiveModal = (bool) => {
     setIsActiveModal(bool);
@@ -30,7 +29,15 @@ const Dashboard = () => {
     return content;
   }, [tasks]);
 
+  const renderTimeList = useMemo(() => {
+    return tasksTime.map(taskTime => {
+      console.log("taskTime ", taskTime)
+      return <Time key={taskTime.id} startTime={taskTime.startTime} doneTime={taskTime.doneTime} />;
+    })
+  }, [tasksTime]);
+
   const content = tasks.length > 0 ? renderTask : null;
+  const timeList = tasksTime.length > 0 ? renderTimeList : null;
 
   return (
     <main>
@@ -53,11 +60,9 @@ const Dashboard = () => {
         <Date dateCurrent={"12, Sat"} />
         <Date dateCurrent={"13, Sun"} />
 
-        <Time timeTask={"7:00"} />
-        <Time timeTask={"7:00"} />
-        <Time timeTask={"7:00"} />
-        <Time timeTask={"7:00"} />
-        <Time timeTask={"7:00"} />
+        {
+          timeList
+        }
 
         <div className="grid__item grid__item__content1">
           { content }
