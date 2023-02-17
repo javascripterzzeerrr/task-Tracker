@@ -36,7 +36,7 @@ const Task = ({ id, title, desc, startTime, doneTime, color }) => {
               <div className="task_desc">
                 { desc }
               </div>
-              <div className="task__time">{ startTime + "-" + doneTime }</div>
+              <div className="task__time">{Number(doneTime.getHours()) - Number(startTime.getHours())}</div>
             </div>
           </div>
           {

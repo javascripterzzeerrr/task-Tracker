@@ -15,7 +15,6 @@ const Coll = styled.div`
     grid-row: row 2 / row ${props => props.rows + 1};
 `;
 
-
 const Column = (props) => {
     const rows = useSelector(dashboardRows);
 

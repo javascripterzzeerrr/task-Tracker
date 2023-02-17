@@ -18,6 +18,7 @@ const Dashboard = () => {
   const [isActiveModal, setIsActiveModal] = useState(false);
   const tasks = useSelector(taskSelectors.tasksListSelector);
   const tasksTime = useSelector(taskSelectors.tasksTimeList);
+  console.log("tasksTime ", tasksTime);
   const rows = useSelector(taskSelectors.dashboardRows);
 
   const updateIsActiveModal = (bool) => {
@@ -37,6 +38,7 @@ const Dashboard = () => {
   }, [tasksTime]);
 
   const content = tasks.length > 0 ? renderTask : null;
+
   const timeList = tasksTime.length > 0 ? renderTimeList : null;
 
   return (
@@ -64,13 +66,27 @@ const Dashboard = () => {
           timeList
         }
 
-        <Column number={1}>{content}</Column>
-        <Column number={2}></Column>
-        <Column number={3}></Column>
-        <Column number={4}></Column>
-        <Column number={5}></Column>
-        <Column number={6}></Column>
-        <Column number={7}></Column>
+        <Column number={1}>
+          {content}
+        </Column>
+        <Column number={2}>
+          
+        </Column>
+        <Column number={3}>
+          
+        </Column>
+        <Column number={4}>
+          
+        </Column>
+        <Column number={5}>
+          
+        </Column>
+        <Column number={6}>
+          
+        </Column>
+        <Column number={7}>
+          
+        </Column>
       
       </GridWrapper>
     </main>

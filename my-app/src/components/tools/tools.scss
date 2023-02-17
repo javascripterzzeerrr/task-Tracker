@@ -1,11 +1,12 @@
 .grid__item{
     background-color: rgb(219, 219, 219);
     border-radius: 10px;
-    padding: 5px;
+    padding: 15px 0;
+    font-weight: bold;
 }
 
 .tools {
-    font-size: 30px;
+    font-size: 24px;
     display: flex;
     justify-content: space-around;
     align-items: center;
