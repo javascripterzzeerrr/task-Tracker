@@ -39,11 +39,12 @@ const task = createReducer(initialState, builder => {
         .addCase(deleteTask, (state, action) => {
             state.delTasksFlag = false;
             state.tasks = state.tasks.filter(task => {
-                return task.id !== action.payload;
+                return task.id !== action.payload.id;
             })
             state.tasksTime = state.tasksTime.filter(taskTime => {
-                return taskTime.id !== action.payload;
+                return taskTime.id !== action.payload.id;
             })
+            state.shiftTask = state.shiftTask - action.payload.count;
         })
         .addDefaultCase(() => {});
 })

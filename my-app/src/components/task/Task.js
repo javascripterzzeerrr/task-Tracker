@@ -14,11 +14,9 @@ const TaskWrapper = styled.div`
   background-color: #fff;
   padding: 8px;
   border-radius: 10px;
-  margin: 5px 0;
+  margin: 8px 0;
   display: flex;
   justify-content: space-between;
-
-  grid-column: col 1 / col 1;
   grid-row: row ${props => props.rowsInit} / row ${props => props.rows + 1};
 `;
 
@@ -26,7 +24,7 @@ const Task = ({ id, title, desc, startTime, doneTime, color, count, shift }) => 
   console.log("TASK COUNT ROW", count);
   const isChangeFlag = useSelector(changeFlagSelector);
   const shiftTaskItem = useSelector(shiftTask);
-  console.log("init shift ", shift)
+  console.log("init shift ", shift);
   console.log("shiftTaskItem ", shiftTaskItem);
 
   console.log("ROWS SINCE ", shift, " => ", shift + count);
@@ -62,7 +60,7 @@ const Task = ({ id, title, desc, startTime, doneTime, color, count, shift }) => 
         {
           isChangeFlag 
           ?
-          <img onClick={() => dispatch(deleteTask(id))} className="btn-close" src={trash} alt="trash" />
+          <img onClick={() => dispatch(deleteTask({ id, count }))} className="btn-close" src={trash} alt="trash" />
           :
           null
         }

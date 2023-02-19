@@ -29,6 +29,7 @@ const Dashboard = () => {
 
   const renderTask = useMemo(() => {
     return tasks.map(({ id, title, desc, startTime, doneTime, color, count, shift }) => {
+      console.log("MUST COUNT IS ", count);
       return <Task key={id} id={id} title={title} desc={desc} startTime={startTime} doneTime={doneTime} color={color} count={count} shift={shift} />
     });
   }, [tasks]);
@@ -63,17 +64,22 @@ const Dashboard = () => {
         <Date dateCurrent={"11, Fri"} />
         <Date dateCurrent={"12, Sat"} />
         <Date dateCurrent={"13, Sun"} />
+        
+        <Column rows={rows} rowsInit={2} number={0}>
+          <Grid rows={rows/2}>
+            {timeList}
+          </Grid>
+        </Column>
 
-        {
-          timeList
-        }
         <Column rows={rows} rowsInit={2} number={1}>
           <Grid rows={rows/2}>
             {content}
           </Grid>
         </Column>
         <Column rows={rows} rowsInit={2} number={2}>
-          
+        <Grid rows={rows/2}>
+            {content}
+          </Grid>
         </Column>
         <Column rows={rows} rowsInit={2} number={3}>
           

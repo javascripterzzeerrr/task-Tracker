@@ -7,6 +7,7 @@ const Time = ({ startTime, doneTime }) => {
     const secDone = transformDate(doneTime);
 
     let count = Math.floor((secDone - secStart) / 1800);
+    console.log("COUNT ", count);
 
     let halfHour = [];
 
@@ -17,6 +18,8 @@ const Time = ({ startTime, doneTime }) => {
             (Math.floor(timeHalfHour / 3600) < 10 ? "0" + Math.floor(timeHalfHour / 3600) : Math.floor(timeHalfHour / 3600)) + ":" + (Math.floor(timeHalfHour / 60) % 60 < 10 ? "0"+ Math.floor(timeHalfHour / 60) % 60 : Math.floor(timeHalfHour / 60) % 60)
         );
     }
+
+    console.log("halfHour ", halfHour);
 
     return (
         <>
