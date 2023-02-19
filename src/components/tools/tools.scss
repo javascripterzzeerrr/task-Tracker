@@ -1,0 +1,29 @@
+.grid__item{
+    background-color: rgb(219, 219, 219);
+    border-radius: 10px;
+    padding: 15px 0;
+    font-weight: bold;
+}
+
+.tools {
+    font-size: 24px;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.plus, .minus {
+    width: 50%;
+    text-align: center;
+    border-radius: 10px;
+
+    &:hover {
+        background-color: rgb(187, 187, 187);
+        cursor: pointer;
+        transition: 0.5s;
+    }
+
+    &:not(:hover) {
+        transition: 0.5s;
+    }
+}
