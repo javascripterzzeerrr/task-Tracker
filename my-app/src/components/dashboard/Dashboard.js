@@ -11,12 +11,14 @@ import Tools from "../tools/Tools";
 import Modal from "../modal/Modal";
 import Column from "../column/Column";
 import GridWrapper from "../gridWrapper/GridWrapper";
+import Grid from "../grid/Grid";
 
 import "./dashboard.scss";
 
 const Dashboard = () => {
   const [isActiveModal, setIsActiveModal] = useState(false);
   const tasks = useSelector(taskSelectors.tasksListSelector);
+  console.log("TASK ", tasks);
   const tasksTime = useSelector(taskSelectors.tasksTimeList);
   console.log("tasksTime ", tasksTime);
   const rows = useSelector(taskSelectors.dashboardRows);
@@ -26,8 +28,8 @@ const Dashboard = () => {
   }
 
   const renderTask = useMemo(() => {
-    return tasks.map(({ id, title, desc, startTime, doneTime, color }) => {
-      return <Task key={id} id={id} title={title} desc={desc} startTime={startTime} doneTime={doneTime} color={color} />
+    return tasks.map(({ id, title, desc, startTime, doneTime, color, count, shift }) => {
+      return <Task key={id} id={id} title={title} desc={desc} startTime={startTime} doneTime={doneTime} color={color} count={count} shift={shift} />
     });
   }, [tasks]);
 
@@ -65,26 +67,27 @@ const Dashboard = () => {
         {
           timeList
         }
-
-        <Column number={1}>
-          {content}
+        <Column rows={rows} rowsInit={2} number={1}>
+          <Grid rows={rows/2}>
+            {content}
+          </Grid>
         </Column>
-        <Column number={2}>
+        <Column rows={rows} rowsInit={2} number={2}>
           
         </Column>
-        <Column number={3}>
+        <Column rows={rows} rowsInit={2} number={3}>
           
         </Column>
-        <Column number={4}>
+        <Column rows={rows} rowsInit={2} number={4}>
           
         </Column>
-        <Column number={5}>
+        <Column rows={rows} rowsInit={2} number={5}>
           
         </Column>
-        <Column number={6}>
+        <Column rows={rows} rowsInit={2} number={6}>
           
         </Column>
-        <Column number={7}>
+        <Column rows={rows} rowsInit={2} number={7}>
           
         </Column>
       

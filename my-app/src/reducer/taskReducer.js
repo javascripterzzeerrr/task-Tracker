@@ -4,23 +4,28 @@ import {
     addTask,
     deleteTask,
     addDeleteFlag,
-    deleteFlag
+    deleteFlag,
 } from "../actions/index";
 
 const initialState = {
     tasks: [],
     tasksTime: [],
     delTasksFlag: false,
+    shiftTask: 0
 };
 
 const task = createReducer(initialState, builder => {
     builder
         .addCase(addTask, (state, action) => {
-            state.tasks.push(action.payload);
+            console.log("REDUCER state.shiftTask ", state.shiftTask);
+            state.tasks.push({...action.payload, shift: state.shiftTask});
+            console.log("REDUCER state.shiftTask ", state.shiftTask);
+            state.shiftTask = state.shiftTask + action.payload.count;
+            console.log("REDUCER state.shiftTask ", state.shiftTask, " action.payload.count ", action.payload.count);
             state.tasksTime.push({
                 id: action.payload.id,
                 startTime: action.payload.startTime,
-                doneTime: action.payload.doneTime
+                doneTime: action.payload.doneTime,
             })
         })
         .addCase(addDeleteFlag, (state) => {

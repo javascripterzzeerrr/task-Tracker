@@ -2,14 +2,34 @@ import { useEffect, useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 import { deleteTask, deleteFlag } from "../../actions/index";
-import { changeFlagSelector } from "../../selectors/index";
+import { changeFlagSelector, shiftTask } from "../../selectors/index";
+
+import styled from "styled-components";
 
 import './task.scss';
 
 import trash from '../../img/trash-can.png';
 
-const Task = ({ id, title, desc, startTime, doneTime, color }) => {
+const TaskWrapper = styled.div`
+  background-color: #fff;
+  padding: 8px;
+  border-radius: 10px;
+  margin: 5px 0;
+  display: flex;
+  justify-content: space-between;
+
+  grid-column: col 1 / col 1;
+  grid-row: row ${props => props.rowsInit} / row ${props => props.rows + 1};
+`;
+
+const Task = ({ id, title, desc, startTime, doneTime, color, count, shift }) => {
+  console.log("TASK COUNT ROW", count);
   const isChangeFlag = useSelector(changeFlagSelector);
+  const shiftTaskItem = useSelector(shiftTask);
+  console.log("init shift ", shift)
+  console.log("shiftTaskItem ", shiftTaskItem);
+
+  console.log("ROWS SINCE ", shift, " => ", shift + count);
 
   const dispatch = useDispatch();
 
@@ -29,24 +49,24 @@ const Task = ({ id, title, desc, startTime, doneTime, color }) => {
   }, [isChangeFlag, handleClickOutTask]);
 
   return (
-      <div className="task">
-          <div style={{'borderLeft': `3px solid ${color}`}} className="task__container">
-            <div className="content">
-              <div style={{'color': `${color}`}} className="task__name" >{ title }</div>
-              <div className="task_desc">
-                { desc }
-              </div>
-              <div className="task__time">{Number(doneTime.getHours()) - Number(startTime.getHours())}</div>
+    <TaskWrapper count={count} rowsInit={shift + 1} rows={shift + count} >
+        <div style={{'borderLeft': `3px solid ${color}`}} className="task__container">
+          <div className="content">
+            <div style={{'color': `${color}`}} className="task__name" >{ title }</div>
+            <div className="task_desc">
+              { desc }
             </div>
+            <div className="task__time">{Number(doneTime.getHours()) - Number(startTime.getHours())}</div>
           </div>
-          {
-            isChangeFlag 
-            ?
-            <img onClick={() => dispatch(deleteTask(id))} className="btn-close" src={trash} alt="trash" />
-            :
-            null
-          }
-      </div>
+        </div>
+        {
+          isChangeFlag 
+          ?
+          <img onClick={() => dispatch(deleteTask(id))} className="btn-close" src={trash} alt="trash" />
+          :
+          null
+        }
+    </TaskWrapper>
   )
 }
 

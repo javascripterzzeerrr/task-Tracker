@@ -5,6 +5,8 @@ import { addTask } from "../../actions/index";
 
 import { v4 as uuidv4 } from 'uuid';
 
+import { transformDate } from "../../utils"; 
+
 import randomColor from "../../utils/randomColor";
 import createDate from "../../utils/createDate";
 
@@ -16,24 +18,22 @@ const Modal = ({ updateIsActiveModal }) => {
   const [startTime, setStartTime] = useState(null);
   const [doneTime, setDoneTime] = useState(null);
 
-  console.log("START TIME => ", startTime);
-  console.log("DONE TIME => ", doneTime);
-
   const dispatch = useDispatch();
 
   const adding = () => {
     if (title.length > 1 && startTime && doneTime) {
       const taskID = uuidv4();
 
-      console.log("createDate(startTime)", createDate(startTime));
-      console.log("createDate(doneTime)", createDate(doneTime));
+      const finishTimeStart = createDate(startTime);
+      const finishTimeDone = createDate(doneTime);
 
       dispatch(addTask({
         id: taskID,
         title,
         desc,
-        startTime: createDate(startTime),
-        doneTime: createDate(doneTime),
+        startTime: finishTimeStart,
+        doneTime: finishTimeDone,
+        count: Math.floor((transformDate(finishTimeDone) - transformDate(finishTimeStart)) / 1800) + 1,
         color: randomColor()
       }));
       updateIsActiveModal(false);

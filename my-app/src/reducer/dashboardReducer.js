@@ -2,7 +2,7 @@ import { createReducer } from "@reduxjs/toolkit";
 
 import {
     addDashboardRows,
-    dateListAction
+    dateListAction,
 } from "../actions/index";
 
 const initialState = {
