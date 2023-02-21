@@ -18,9 +18,7 @@ import "./dashboard.scss";
 const Dashboard = () => {
   const [isActiveModal, setIsActiveModal] = useState(false);
   const tasks = useSelector(taskSelectors.tasksListSelector);
-  console.log("TASK ", tasks);
-  const tasksTime = useSelector(taskSelectors.tasksTimeList);
-  console.log("tasksTime ", tasksTime);
+  const tasksTime = useSelector(taskSelectors.tasksqTimeList);
   const rows = useSelector(taskSelectors.dashboardRows);
 
   const updateIsActiveModal = (bool) => {
