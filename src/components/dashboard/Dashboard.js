@@ -1,5 +1,5 @@
-import { useState, useMemo } from "react";
-import { useSelector } from "react-redux";
+import { useState, useMemo, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 
 import * as taskSelectors from "../../selectors/index";
 
@@ -13,13 +13,40 @@ import Column from "../column/Column";
 import GridWrapper from "../gridWrapper/GridWrapper";
 import Grid from "../grid/Grid";
 
+import { fetchTasksTimes } from "../../http/taskAPI";
+
 import "./dashboard.scss";
 
 const Dashboard = () => {
   const [isActiveModal, setIsActiveModal] = useState(false);
-  const tasks = useSelector(taskSelectors.tasksListSelector);
-  const tasksTime = useSelector(taskSelectors.tasksqTimeList);
+  // const tasks = useSelector(taskSelectors.tasksListSelector);
+  // const tasksTime = useSelector(taskSelectors.tasksTimeList);
+  const [tasks, setTasks] = useState([]);
+  const [tasksTime, setTasksTime] = useState([]);
   const rows = useSelector(taskSelectors.dashboardRows);
+
+  const dispatch = useDispatch();
+
+  const gettingDataFromServer = () => {
+    fetchTasksTimes()
+        .then(data => {
+          console.log("DATA FETCH ", data);
+          setTasks(data.data.Tasks);
+          setTasksTime(data.data.times);
+        })
+        .catch(e => console.log(e))
+  }
+
+  // const updateState = (Tasks) => {
+    
+  // }
+
+  useEffect(() => {
+    gettingDataFromServer();
+  }, []);
+  
+  console.log("TASKS ", tasks);
+  console.log("tasksTime ", tasksTime);
 
   const updateIsActiveModal = (bool) => {
     setIsActiveModal(bool);
@@ -27,13 +54,13 @@ const Dashboard = () => {
 
   const renderTask = useMemo(() => {
     return tasks.map((item, index) => {
-      return <Task key={item.id} {...item} index={index} />
+      if (index > 28) return <Task key={item.id} {...item} index={index} />
     });
   }, [tasks]);
 
   const renderTimeList = useMemo(() => {
     return tasksTime.map(taskTime => {
-      return <Time key={taskTime.id} startTime={taskTime.startTime} doneTime={taskTime.doneTime} count={taskTime.count} />;
+      return <Time key={taskTime.id} startTime={taskTime.createdAt} doneTime={taskTime.doneTime} count={taskTime.count} />;
     });
   }, [tasksTime]);
 

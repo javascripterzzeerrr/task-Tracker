@@ -20,7 +20,7 @@ const TaskWrapper = styled.div`
   grid-row: row ${props => props.rowsInit} / row ${props => props.rows + 1};
 `;
 
-const Task = ({ id, title, desc, startTime, doneTime, color, count, shift, index }) => {
+const Task = ({ id, title, desc, createdAt, doneTime, color, count, shift, index }) => {
   console.log("INDEX in task ", index);
   console.log("TASK COUNT ROW", count);
   const isChangeFlag = useSelector(changeFlagSelector);
@@ -55,7 +55,7 @@ const Task = ({ id, title, desc, startTime, doneTime, color, count, shift, index
             <div className="task_desc">
               { desc }
             </div>
-            <div className="task__time">{Number(doneTime.getHours()) - Number(startTime.getHours())}</div>
+            <div className="task__time">{Number(doneTime.getHours()) - Number(createdAt.getHours())}</div>
           </div>
         </div>
         {

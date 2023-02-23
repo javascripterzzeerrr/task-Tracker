@@ -1,13 +1,13 @@
 import { $host } from "./index";
 
 export const addTask = async (task) => {
-    const { newTask } = await $host.post('api/task/add', task);
+    const response = await $host.post('api/task/add', task);
 
-    return newTask;
+    return response;
 }
 
 export const fetchTasksTimes = async () => {
-    const { tasks, times } = await $host.get('api/task/');
+    const response = await $host.get('api/task/');
 
-    return { tasks, times };
+    return response;
 }

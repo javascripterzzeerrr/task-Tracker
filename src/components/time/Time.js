@@ -2,9 +2,9 @@ import { transformDate, transformTime } from "../../utils";
 
 import './Time.scss';
 
-const Time = ({ startTime, doneTime, count }) => {
+const Time = ({ createdAt, doneTime, count }) => {
     console.log("COUNT ", count);
-    const secStart = transformDate(startTime);
+    const secStart = transformDate(createdAt);
     const secDone = transformDate(doneTime);
     let halfHour = [];
 
@@ -29,7 +29,7 @@ const Time = ({ startTime, doneTime, count }) => {
 
     return (
         <>
-            <div className="grid__item info">{ transformTime(startTime) }</div>
+            <div className="grid__item info">{ transformTime(createdAt) }</div>
             {
                 halfHour.length > 0
                 ?
