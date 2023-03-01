@@ -1,9 +1,11 @@
 import { createReducer } from "@reduxjs/toolkit";
 
 import {
+    initialUpdateTasks,
     addTask,
     deleteTask,
     addDeleteFlag,
+    updateShiftTask,
     deleteFlag,
 } from "../actions/index";
 
@@ -17,6 +19,42 @@ const initialState = {
 
 const task = createReducer(initialState, builder => {
     builder
+        .addCase(initialUpdateTasks, (state, action) => {
+            console.log("ACTION INIT TASKS ", action.payload);
+            if (action.payload.length > 1) {
+                action.payload.map(({ id, title, desc, starttime, donetime, count, color, shift, date }) => {
+                    console.log("ITEM REDUX ", { id, title, desc, starttime, donetime, count, color, shift, date })
+                    state.tasks.push({
+                        id, 
+                        title,
+                        desc,
+                        startTime: starttime,
+                        doneTime: donetime, 
+                        count,
+                        color,
+                        shift,
+                        date,
+                    });
+                    state.tasksTime.push({
+                        id,
+                        startTime: starttime,
+                        doneTime: donetime,
+                        count
+                    })
+                })
+            } else {
+                state.tasks.push({...action.payload});
+                state.tasksTime.push({
+                    id: action.payload.id,
+                    startTime: action.payload.startTime,
+                    doneTime: action.payload.doneTime,
+                    count: action.payload.count
+                })
+            }
+
+            // console.log("ATTEMPTION STATE.TASKS ", state.tasks); // proxys
+            // console.log("ATTEMPTION STATE.TASKSTIMES ", state.tasksTime); // proxy
+        })
         .addCase(addTask, (state, action) => {
             console.log("REDUCER state.shiftTask ", state.shiftTask);
             state.tasks.push({...action.payload, shift: state.shiftTask});
@@ -63,6 +101,10 @@ const task = createReducer(initialState, builder => {
             state.deleteShift = state.deleteShift + action.payload.count;
 
             console.log("INDEX PAYLOAD ", action.payload.index);
+        })
+        .addCase(updateShiftTask, (state, action) => {
+            state.shiftTask = state.shiftTask + action.payload;
+            console.log("state.shiftTask + action.payload", state.shiftTask);
         })
         .addDefaultCase(() => {});
 })

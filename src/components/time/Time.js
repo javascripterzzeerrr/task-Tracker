@@ -1,11 +1,21 @@
-import { transformDate, transformTime } from "../../utils";
+import { transformDate, transformTime, createDate } from "../../utils";
 
 import './Time.scss';
 
-const Time = ({ createdAt, doneTime, count }) => {
+const Time = ({ startTime, doneTime, count }) => {
     console.log("COUNT ", count);
-    const secStart = transformDate(createdAt);
-    const secDone = transformDate(doneTime);
+    console.log("startTime ", startTime);
+    console.log("doneTime ", doneTime);
+
+    let transformStartTime = createDate(startTime);
+    let transformDoneTime = createDate(doneTime);
+
+    const secStart = transformDate(transformStartTime);
+    console.log("TYPEOFS ", typeof secStart);
+    const secDone = transformDate(transformDoneTime);
+    console.log("TYPEOFD ", typeof secDone);
+    console.log(secStart)
+    console.log(secDone)
     let halfHour = [];
 
     if (count === 3) {
@@ -29,7 +39,7 @@ const Time = ({ createdAt, doneTime, count }) => {
 
     return (
         <>
-            <div className="grid__item info">{ transformTime(createdAt) }</div>
+            <div className="grid__item info">{ transformTime(transformStartTime) }</div>
             {
                 halfHour.length > 0
                 ?
@@ -44,7 +54,7 @@ const Time = ({ createdAt, doneTime, count }) => {
                 null
             }
             <div className="grid__item info">
-                { transformTime(doneTime) }
+                { transformTime(transformDoneTime) }
             </div>
         </>
     )

@@ -1,12 +1,12 @@
 import { $host } from "./index";
 
-export const addTask = async (task) => {
+export const addTaskAPI = async (task) => {
     const response = await $host.post('api/task/add', task);
 
     return response;
 }
 
-export const fetchTasksTimes = async () => {
+export const fetchTasksTimesAPI = async () => {
     const response = await $host.get('api/task/');
 
     return response;

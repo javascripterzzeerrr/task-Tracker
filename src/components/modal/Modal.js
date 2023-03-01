@@ -1,11 +1,15 @@
 import { useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
-import { addTask } from "../../actions/index";
+import { addTask, updateShiftTask } from "../../actions/index";
+
+import { shiftTask } from "../../selectors/index";
 
 import { v4 as uuidv4 } from 'uuid';
 
 import { transformDate } from "../../utils"; 
+
+import { addTaskAPI } from "../../http/taskAPI";
 
 import randomColor from "../../utils/randomColor";
 import createDate from "../../utils/createDate";
@@ -18,6 +22,8 @@ const Modal = ({ updateIsActiveModal }) => {
   const [startTime, setStartTime] = useState(null);
   const [doneTime, setDoneTime] = useState(null);
 
+  const shiftFromStore = useSelector(shiftTask);
+
   const dispatch = useDispatch();
 
   const adding = () => {
@@ -27,19 +33,43 @@ const Modal = ({ updateIsActiveModal }) => {
       const finishTimeStart = createDate(startTime);
       const finishTimeDone = createDate(doneTime);
 
+      console.log("DONETIME FROM MODAL JS ", finishTimeDone);
+
+      let count = (Math.floor((transformDate(finishTimeDone) - transformDate(finishTimeStart)) / 1800) + 1) < 2
+      ?
+      3
+      :
+      (Math.floor((transformDate(finishTimeDone) - transformDate(finishTimeStart)) / 1800) + 1);
+
+      let color = randomColor();
+
       dispatch(addTask({
         id: taskID,
         title,
         desc,
-        startTime: finishTimeStart,
-        doneTime: finishTimeDone,
-        count: (Math.floor((transformDate(finishTimeDone) - transformDate(finishTimeStart)) / 1800) + 1) < 2
-        ?
-        3
-        :
-        (Math.floor((transformDate(finishTimeDone) - transformDate(finishTimeStart)) / 1800) + 1),
-        color: randomColor()
+        startTime: startTime,
+        doneTime: doneTime,
+        date: new Date(),
+        count,
+        color
       }));
+
+      console.log("I amma send doneTime ", startTime);
+      console.log("I amma send doneTime ", doneTime);
+
+      addTaskAPI({
+        title,
+        desc,
+        starttime: startTime,
+        donetime: doneTime,
+        date: new Date(),
+        count: count,
+        color,
+        shift: shiftFromStore,
+      });
+
+      dispatch(updateShiftTask(count));
+
       updateIsActiveModal(false);
     }
   };

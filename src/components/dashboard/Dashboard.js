@@ -3,6 +3,8 @@ import { useDispatch, useSelector } from "react-redux";
 
 import * as taskSelectors from "../../selectors/index";
 
+import { initialUpdateTasks } from "../../actions";
+
 import Preview from "../preview/Preview";
 import Time from "../time/Time";
 import Task from "../task/Task";
@@ -13,33 +15,29 @@ import Column from "../column/Column";
 import GridWrapper from "../gridWrapper/GridWrapper";
 import Grid from "../grid/Grid";
 
-import { fetchTasksTimes } from "../../http/taskAPI";
+import { fetchTasksTimesAPI } from "../../http/taskAPI";
 
 import "./dashboard.scss";
 
 const Dashboard = () => {
   const [isActiveModal, setIsActiveModal] = useState(false);
-  // const tasks = useSelector(taskSelectors.tasksListSelector);
-  // const tasksTime = useSelector(taskSelectors.tasksTimeList);
-  const [tasks, setTasks] = useState([]);
-  const [tasksTime, setTasksTime] = useState([]);
+  const tasks = useSelector(taskSelectors.tasksListSelector);
+  const tasksTime = useSelector(taskSelectors.tasksTimeList);
   const rows = useSelector(taskSelectors.dashboardRows);
 
   const dispatch = useDispatch();
 
   const gettingDataFromServer = () => {
-    fetchTasksTimes()
+    fetchTasksTimesAPI()
         .then(data => {
-          console.log("DATA FETCH ", data);
-          setTasks(data.data.Tasks);
-          setTasksTime(data.data.times);
+          if (data.data.Tasks.length > 0) {
+            console.log("DATA FETCH ", data);
+            console.log("DATA FETCH TASKS ", data.data.Tasks);
+            dispatch(initialUpdateTasks(data.data.Tasks))
+          }
         })
         .catch(e => console.log(e))
   }
-
-  // const updateState = (Tasks) => {
-    
-  // }
 
   useEffect(() => {
     gettingDataFromServer();
@@ -52,19 +50,26 @@ const Dashboard = () => {
     setIsActiveModal(bool);
   }
 
+  console.log("TASK STATE ", tasks);
+
   const renderTask = useMemo(() => {
     return tasks.map((item, index) => {
-      if (index > 28) return <Task key={item.id} {...item} index={index} />
+      console.log("IMPORTANT ", item);
+      return <Task key={item.id} {...item} index={index} />
     });
   }, [tasks]);
 
   const renderTimeList = useMemo(() => {
     return tasksTime.map(taskTime => {
-      return <Time key={taskTime.id} startTime={taskTime.createdAt} doneTime={taskTime.doneTime} count={taskTime.count} />;
+      console.log("IMPORTANT2 ", taskTime);
+      console.log("taskTime in Dashboard.js ", taskTime);
+      return <Time key={taskTime.id} startTime={taskTime.startTime} doneTime={taskTime.doneTime} count={taskTime.count} />;
     });
   }, [tasksTime]);
 
   const content = tasks.length > 0 ? renderTask : null;
+
+  console.log("CONTENT ", content);
 
   const timeList = tasksTime.length > 0 ? renderTimeList : null;
 

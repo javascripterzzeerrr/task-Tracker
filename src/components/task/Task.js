@@ -20,13 +20,14 @@ const TaskWrapper = styled.div`
   grid-row: row ${props => props.rowsInit} / row ${props => props.rows + 1};
 `;
 
-const Task = ({ id, title, desc, createdAt, doneTime, color, count, shift, index }) => {
+const Task = ({ id, title, desc, color, count, shift, index }) => {
   console.log("INDEX in task ", index);
   console.log("TASK COUNT ROW", count);
   const isChangeFlag = useSelector(changeFlagSelector);
   const shiftTaskItem = useSelector(shiftTask);
   console.log("init shift ", shift);
   console.log("shiftTaskItem ", shiftTaskItem);
+  let newShift = Number(shift);
 
   console.log("ROWS SINCE ", shift, " => ", shift + count);
 
@@ -48,14 +49,14 @@ const Task = ({ id, title, desc, createdAt, doneTime, color, count, shift, index
   }, [isChangeFlag, handleClickOutTask]);
 
   return (
-    <TaskWrapper count={count} rowsInit={shift + 1} rows={shift + count} >
+    <TaskWrapper count={count} rowsInit={newShift + 1} rows={newShift + count} >
         <div style={{'borderLeft': `3px solid ${color}`}} className="task__container">
           <div className="content">
             <div style={{'color': `${color}`}} className="task__name" >{ title }</div>
             <div className="task_desc">
               { desc }
             </div>
-            <div className="task__time">{Number(doneTime.getHours()) - Number(createdAt.getHours())}</div>
+            <div className="task__time">{/*Number(doneTime.getHours()) - Number(createdAt.getHours())*/}</div>
           </div>
         </div>
         {
