@@ -29,14 +29,12 @@ const Dashboard = () => {
 
   const gettingDataFromServer = () => {
     fetchTasksTimesAPI()
-        .then(data => {
-          if (data.data.Tasks.length > 0) {
-            console.log("DATA FETCH ", data);
-            console.log("DATA FETCH TASKS ", data.data.Tasks);
-            dispatch(initialUpdateTasks(data.data.Tasks))
-          }
-        })
-        .catch(e => console.log(e))
+      .then(data => {
+        if (data.data.Tasks.length > 0 && tasks.length === 0) {
+          dispatch(initialUpdateTasks(data.data.Tasks))
+        }
+      })
+      .catch(e => console.log(e))
   }
 
   useEffect(() => {
@@ -50,19 +48,14 @@ const Dashboard = () => {
     setIsActiveModal(bool);
   }
 
-  console.log("TASK STATE ", tasks);
-
   const renderTask = useMemo(() => {
     return tasks.map((item, index) => {
-      console.log("IMPORTANT ", item);
       return <Task key={item.id} {...item} index={index} />
     });
   }, [tasks]);
 
   const renderTimeList = useMemo(() => {
     return tasksTime.map(taskTime => {
-      console.log("IMPORTANT2 ", taskTime);
-      console.log("taskTime in Dashboard.js ", taskTime);
       return <Time key={taskTime.id} startTime={taskTime.startTime} doneTime={taskTime.doneTime} count={taskTime.count} />;
     });
   }, [tasksTime]);

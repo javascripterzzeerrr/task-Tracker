@@ -20,10 +20,8 @@ const initialState = {
 const task = createReducer(initialState, builder => {
     builder
         .addCase(initialUpdateTasks, (state, action) => {
-            console.log("ACTION INIT TASKS ", action.payload);
             if (action.payload.length > 1) {
                 action.payload.map(({ id, title, desc, starttime, donetime, count, color, shift, date }) => {
-                    console.log("ITEM REDUX ", { id, title, desc, starttime, donetime, count, color, shift, date })
                     state.tasks.push({
                         id, 
                         title,
@@ -56,11 +54,8 @@ const task = createReducer(initialState, builder => {
             // console.log("ATTEMPTION STATE.TASKSTIMES ", state.tasksTime); // proxy
         })
         .addCase(addTask, (state, action) => {
-            console.log("REDUCER state.shiftTask ", state.shiftTask);
             state.tasks.push({...action.payload, shift: state.shiftTask});
-            console.log("REDUCER state.shiftTask ", state.shiftTask);
-            state.shiftTask = state.shiftTask + action.payload.count;
-            console.log("REDUCER state.shiftTask ", state.shiftTask, " action.payload.count ", action.payload.count);
+            // state.shiftTask = state.shiftTask + action.payload.count;
             state.tasksTime.push({
                 id: action.payload.id,
                 startTime: action.payload.startTime,
@@ -81,10 +76,10 @@ const task = createReducer(initialState, builder => {
 
             // change propertie is shift
             state.tasks = state.tasks.map((item, index) => {
-                console.log("COMPARE ===> ", index + " VS ", action.payload.index);
+                // console.log("COMPARE ===> ", index + " VS ", action.payload.index);
                 if (index > action.payload.index) {
-                    console.log("AFTER ", state.deleteShift + action.payload.count);
-                    console.log("item.shift ", item.shift);
+                    // console.log("AFTER ", state.deleteShift + action.payload.count);
+                    // console.log("item.shift ", item.shift);
                     return { ...item, shift: item.shift - action.payload.count}
                 }
                 return { ...item };
@@ -97,10 +92,10 @@ const task = createReducer(initialState, builder => {
                 return taskTime.id !== action.payload.id;
             })
             state.shiftTask = state.shiftTask - action.payload.count;
-            console.log("BEFORE ", state.deleteShift + action.payload.count);
+            // console.log("BEFORE ", state.deleteShift + action.payload.count);
             state.deleteShift = state.deleteShift + action.payload.count;
 
-            console.log("INDEX PAYLOAD ", action.payload.index);
+            // console.log("INDEX PAYLOAD ", action.payload.index);
         })
         .addCase(updateShiftTask, (state, action) => {
             state.shiftTask = state.shiftTask + action.payload;

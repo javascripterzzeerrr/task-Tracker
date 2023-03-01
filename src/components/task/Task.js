@@ -42,11 +42,17 @@ const Task = ({ id, title, desc, color, count, shift, index }) => {
     }
   }, [isChangeFlag]);
 
+  // useEffect(() => {
+
+  // }, []);
+
   useEffect(() => {
     document.addEventListener('click', handleClickOutTask);
 
     return () => document.removeEventListener('click', handleClickOutTask);
   }, [isChangeFlag, handleClickOutTask]);
+
+  console.log("NEW SHIFT ", newShift);
 
   return (
     <TaskWrapper count={count} rowsInit={newShift + 1} rows={newShift + count} >

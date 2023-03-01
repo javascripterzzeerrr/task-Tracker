@@ -33,8 +33,6 @@ const Modal = ({ updateIsActiveModal }) => {
       const finishTimeStart = createDate(startTime);
       const finishTimeDone = createDate(doneTime);
 
-      console.log("DONETIME FROM MODAL JS ", finishTimeDone);
-
       let count = (Math.floor((transformDate(finishTimeDone) - transformDate(finishTimeStart)) / 1800) + 1) < 2
       ?
       3
@@ -53,9 +51,6 @@ const Modal = ({ updateIsActiveModal }) => {
         count,
         color
       }));
-
-      console.log("I amma send doneTime ", startTime);
-      console.log("I amma send doneTime ", doneTime);
 
       addTaskAPI({
         title,

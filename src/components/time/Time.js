@@ -3,19 +3,12 @@ import { transformDate, transformTime, createDate } from "../../utils";
 import './Time.scss';
 
 const Time = ({ startTime, doneTime, count }) => {
-    console.log("COUNT ", count);
-    console.log("startTime ", startTime);
-    console.log("doneTime ", doneTime);
-
     let transformStartTime = createDate(startTime);
     let transformDoneTime = createDate(doneTime);
 
     const secStart = transformDate(transformStartTime);
-    console.log("TYPEOFS ", typeof secStart);
     const secDone = transformDate(transformDoneTime);
-    console.log("TYPEOFD ", typeof secDone);
-    console.log(secStart)
-    console.log(secDone)
+
     let halfHour = [];
 
     if (count === 3) {
