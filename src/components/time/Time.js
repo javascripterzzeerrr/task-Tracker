@@ -1,11 +1,14 @@
+import { useDispatch } from "react-redux";
+
+// import { addTimeSet } from "../../actions";
+
 import { transformDate, transformTime, createDate } from "../../utils";
 
 import './Time.scss';
 
 const Time = ({ starttime, donetime, count }) => {
 
-    console.log('startTime in Time.js ', starttime);
-    console.log('doneTime in Time.js ', donetime);
+    // const dispatch = useDispatch();
 
     let transformStartTime = createDate(starttime);
     let transformDoneTime = createDate(donetime);
@@ -31,6 +34,8 @@ const Time = ({ starttime, donetime, count }) => {
             );
         }
     }
+
+    // dispatch(addTimeSet(halfHour));
 
     console.log("halfHour ", halfHour);
 

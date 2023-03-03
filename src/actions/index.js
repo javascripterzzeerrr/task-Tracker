@@ -2,7 +2,11 @@ import { createAction } from "@reduxjs/toolkit";
 
 // task
 export const initialUpdateTasks = createAction("INITIAL_UPDATE_TASKS");
+export const fetchUpdateAddedTasks = createAction("FETCH_UPDATE_ADDED_TASKS");
+export const startLoading = createAction("START_LOADING");
+export const endLoading = createAction("END_LOADING");
 export const addTask = createAction("ADD_TASK");
+export const addTimeSet = createAction("ADD_TIME_SET");
 export const deleteTask = createAction("DELETE_TASK");
 export const addDeleteFlag = createAction("ADD_FLAG_DELETE");
 export const deleteFlag = createAction("FLAG_DELETE");

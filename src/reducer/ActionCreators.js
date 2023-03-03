@@ -6,6 +6,5 @@ export const fetchTasks = createAsyncThunk(
     'tasks/fetchAll',
     (_, thunkAPI) => {
         fetchTasksTimesAPI()
-            .then()
     }
 )

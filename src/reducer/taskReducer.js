@@ -2,7 +2,10 @@ import { createReducer } from "@reduxjs/toolkit";
 
 import {
     initialUpdateTasks,
+    startLoading,
+    endLoading,
     addTask,
+    // addTimeSet,
     deleteTask,
     addDeleteFlag,
     updateShiftTask,
@@ -12,39 +15,47 @@ import {
 const initialState = {
     tasks: [],
     tasksTime: [],
+    loading: false,
     delTasksFlag: false,
     shiftTask: 0,
+    // uniqueTimes: new Set(),
     deleteShift: 0,
-    uniqueId: new Set(),
 };
 
 const task = createReducer(initialState, builder => {
     builder
         .addCase(initialUpdateTasks, (state, action) => {
+            state.tasks = [];
+            state.tasksTime =  [];
             console.log("ACTION INITIAL FETCH ", action.payload);
-                action.payload.map(({ id, title, desc, starttime, donetime, count, color, shift, date }) => {
-                    if (!state.uniqueId.has(id)) {
-                       state.tasks.push({
-                            id, 
-                            title,
-                            desc,
-                            starttime,
-                            donetime,
-                            count,
-                            color,
-                            shift,
-                            date,
-                        });
-                        state.tasksTime.push({
-                            id,
-                            starttime,
-                            donetime,
-                            count
-                        })
-                        console.log("ADD TO TASKSTIMES ", state.tasksTime); 
-                    }
-                })
-            })
+                action.payload.forEach(({ id, title, desc, starttime, donetime, count, color, shift, date }) => {
+                    state.tasks.push({
+                        id, 
+                        title,
+                        desc,
+                        starttime,
+                        donetime,
+                        count,
+                        color,
+                        shift,
+                        date,
+                    });
+                    state.tasksTime.push({
+                        id,
+                        starttime,
+                        donetime,
+                        count
+                    })
+                    console.log("ADD TO TASKSTIMES ", state.tasksTime); 
+                }
+            )
+        })
+        .addCase(startLoading, (state) => {
+            state.loading = true;
+        })
+        .addCase(endLoading, (state) => {
+            state.loading = false;
+        })
         .addCase(addTask, (state, action) => {
             state.tasks.push({...action.payload, shift: state.shiftTask});
             // state.shiftTask = state.shiftTask + action.payload.count;
@@ -55,6 +66,11 @@ const task = createReducer(initialState, builder => {
                 count: action.payload.count
             })
         })
+        // .addCase(addTimeSet, (state, action) => {
+        //     action.payload.forEach(time => {
+        //         state.uniqueTimes.push(time);
+        //     })
+        // })
         .addCase(addDeleteFlag, (state) => {
             if (state.tasks.length > 0) {
                 state.delTasksFlag = true;

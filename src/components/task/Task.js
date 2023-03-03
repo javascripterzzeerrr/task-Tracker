@@ -21,15 +21,15 @@ const TaskWrapper = styled.div`
 `;
 
 const Task = ({ id, title, desc, color, count, shift, index }) => {
-  console.log("INDEX in task ", index);
-  console.log("TASK COUNT ROW", count);
+  // console.log("INDEX in task ", index);
+  // console.log("TASK COUNT ROW", count);
   const isChangeFlag = useSelector(changeFlagSelector);
   const shiftTaskItem = useSelector(shiftTask);
-  console.log("init shift ", shift);
-  console.log("shiftTaskItem ", shiftTaskItem);
+  // console.log("init shift ", shift);
+  // console.log("shiftTaskItem ", shiftTaskItem);
   let newShift = Number(shift);
 
-  console.log("ROWS SINCE ", shift, " => ", shift + count);
+  // console.log("ROWS SINCE ", shift, " => ", shift + count);
 
   const dispatch = useDispatch();
 

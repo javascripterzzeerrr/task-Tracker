@@ -1,9 +1,9 @@
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
-import { addTask, updateShiftTask } from "../../actions/index";
+import { addTask, updateShiftTask, addTimeSet } from "../../actions/index";
 
-import { shiftTask } from "../../selectors/index";
+import { shiftTask, uniqueTimes } from "../../selectors/index";
 
 import { v4 as uuidv4 } from 'uuid';
 
@@ -23,6 +23,11 @@ const Modal = ({ updateIsActiveModal }) => {
   const [donetime, setDoneTime] = useState(null);
 
   const shiftFromStore = useSelector(shiftTask);
+  // const setTimes = useSelector(uniqueTimes);
+  // console.log('Set Times ', setTimes);
+
+  console.log('starttime in set ', starttime);
+  console.log('donetime in set ', donetime);
 
   const dispatch = useDispatch();
 

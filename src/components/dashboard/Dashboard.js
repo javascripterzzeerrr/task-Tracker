@@ -1,10 +1,10 @@
 import { useState, useMemo, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import shallowequal from "shallowequal";
+// import shallowequal from "shallowequal";
 
 import * as taskSelectors from "../../selectors/index";
 
-import { initialUpdateTasks } from "../../actions";
+import { initialUpdateTasks, startLoading, endLoading } from "../../actions";
 
 import Preview from "../preview/Preview";
 import Time from "../time/Time";
@@ -29,15 +29,13 @@ const Dashboard = () => {
   const dispatch = useDispatch();
 
   const gettingDataFromServer = () => {
+    dispatch(startLoading())
     fetchTasksTimesAPI()
       .then(data => {
-        console.log("BAG ===========================> ", tasks.length);
-        if (data.data.Tasks.length > 0 && tasks.length === 0) {
-          console.log("RENDER ==========================");
           dispatch(initialUpdateTasks(data.data.Tasks))
-        }
       })
       .catch(e => console.log(e))
+    dispatch(endLoading())
   }
 
   useEffect(() => {
