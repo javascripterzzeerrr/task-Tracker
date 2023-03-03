@@ -15,51 +15,43 @@ const initialState = {
     delTasksFlag: false,
     shiftTask: 0,
     deleteShift: 0,
+    uniqueId: new Set(),
 };
 
 const task = createReducer(initialState, builder => {
     builder
         .addCase(initialUpdateTasks, (state, action) => {
-            if (action.payload.length > 1) {
+            console.log("ACTION INITIAL FETCH ", action.payload);
                 action.payload.map(({ id, title, desc, starttime, donetime, count, color, shift, date }) => {
-                    state.tasks.push({
-                        id, 
-                        title,
-                        desc,
-                        startTime: starttime,
-                        doneTime: donetime, 
-                        count,
-                        color,
-                        shift,
-                        date,
-                    });
-                    state.tasksTime.push({
-                        id,
-                        startTime: starttime,
-                        doneTime: donetime,
-                        count
-                    })
+                    if (!state.uniqueId.has(id)) {
+                       state.tasks.push({
+                            id, 
+                            title,
+                            desc,
+                            starttime,
+                            donetime,
+                            count,
+                            color,
+                            shift,
+                            date,
+                        });
+                        state.tasksTime.push({
+                            id,
+                            starttime,
+                            donetime,
+                            count
+                        })
+                        console.log("ADD TO TASKSTIMES ", state.tasksTime); 
+                    }
                 })
-            } else {
-                state.tasks.push({...action.payload});
-                state.tasksTime.push({
-                    id: action.payload.id,
-                    startTime: action.payload.startTime,
-                    doneTime: action.payload.doneTime,
-                    count: action.payload.count
-                })
-            }
-
-            // console.log("ATTEMPTION STATE.TASKS ", state.tasks); // proxys
-            // console.log("ATTEMPTION STATE.TASKSTIMES ", state.tasksTime); // proxy
-        })
+            })
         .addCase(addTask, (state, action) => {
             state.tasks.push({...action.payload, shift: state.shiftTask});
             // state.shiftTask = state.shiftTask + action.payload.count;
             state.tasksTime.push({
                 id: action.payload.id,
-                startTime: action.payload.startTime,
-                doneTime: action.payload.doneTime,
+                starttime: action.payload.starttime,
+                donetime: action.payload.donetime,
                 count: action.payload.count
             })
         })

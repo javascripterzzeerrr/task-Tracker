@@ -1,5 +1,6 @@
 import { useState, useMemo, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import shallowequal from "shallowequal";
 
 import * as taskSelectors from "../../selectors/index";
 
@@ -30,7 +31,9 @@ const Dashboard = () => {
   const gettingDataFromServer = () => {
     fetchTasksTimesAPI()
       .then(data => {
+        console.log("BAG ===========================> ", tasks.length);
         if (data.data.Tasks.length > 0 && tasks.length === 0) {
+          console.log("RENDER ==========================");
           dispatch(initialUpdateTasks(data.data.Tasks))
         }
       })
@@ -50,13 +53,15 @@ const Dashboard = () => {
 
   const renderTask = useMemo(() => {
     return tasks.map((item, index) => {
+      console.log("TASKS MAP ", item);
       return <Task key={item.id} {...item} index={index} />
     });
   }, [tasks]);
 
   const renderTimeList = useMemo(() => {
     return tasksTime.map(taskTime => {
-      return <Time key={taskTime.id} startTime={taskTime.startTime} doneTime={taskTime.doneTime} count={taskTime.count} />;
+      console.log("taskTime MAP ", taskTime);
+      return <Time key={taskTime.id} starttime={taskTime.starttime} donetime={taskTime.donetime} count={taskTime.count} />;
     });
   }, [tasksTime]);
 

@@ -19,19 +19,19 @@ import "./modal.scss";
 const Modal = ({ updateIsActiveModal }) => {
   const [title, setTitle] = useState(null);
   const [desc, setDesc] = useState(null);
-  const [startTime, setStartTime] = useState(null);
-  const [doneTime, setDoneTime] = useState(null);
+  const [starttime, setStartTime] = useState(null);
+  const [donetime, setDoneTime] = useState(null);
 
   const shiftFromStore = useSelector(shiftTask);
 
   const dispatch = useDispatch();
 
   const adding = () => {
-    if (title.length > 1 && startTime && doneTime) {
+    if (title.length > 1 && starttime && donetime) {
       const taskID = uuidv4();
 
-      const finishTimeStart = createDate(startTime);
-      const finishTimeDone = createDate(doneTime);
+      const finishTimeStart = createDate(starttime);
+      const finishTimeDone = createDate(donetime);
 
       let count = (Math.floor((transformDate(finishTimeDone) - transformDate(finishTimeStart)) / 1800) + 1) < 2
       ?
@@ -45,20 +45,21 @@ const Modal = ({ updateIsActiveModal }) => {
         id: taskID,
         title,
         desc,
-        startTime: startTime,
-        doneTime: doneTime,
+        starttime: starttime,
+        donetime: donetime,
         date: new Date(),
         count,
-        color
+        color,
+        shift: shiftFromStore,
       }));
 
       addTaskAPI({
         title,
         desc,
-        starttime: startTime,
-        donetime: doneTime,
+        starttime: starttime,
+        donetime: donetime,
         date: new Date(),
-        count: count,
+        count,
         color,
         shift: shiftFromStore,
       });
@@ -112,7 +113,7 @@ const Modal = ({ updateIsActiveModal }) => {
             type="text"
             className="title__add"
             placeholder="Example 00:00"
-            value={startTime}
+            value={starttime}
           />
           <div className="time">
             Укажите продолжительность задача (в формате XX:XX)
@@ -123,7 +124,7 @@ const Modal = ({ updateIsActiveModal }) => {
             type="text"
             list="cityname"
             placeholder="Example 01:00"
-            value={doneTime}
+            value={donetime}
           />
           <datalist id="cityname">
             <option value={2}></option>

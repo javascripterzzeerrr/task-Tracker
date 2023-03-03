@@ -2,9 +2,13 @@ import { transformDate, transformTime, createDate } from "../../utils";
 
 import './Time.scss';
 
-const Time = ({ startTime, doneTime, count }) => {
-    let transformStartTime = createDate(startTime);
-    let transformDoneTime = createDate(doneTime);
+const Time = ({ starttime, donetime, count }) => {
+
+    console.log('startTime in Time.js ', starttime);
+    console.log('doneTime in Time.js ', donetime);
+
+    let transformStartTime = createDate(starttime);
+    let transformDoneTime = createDate(donetime);
 
     const secStart = transformDate(transformStartTime);
     const secDone = transformDate(transformDoneTime);
