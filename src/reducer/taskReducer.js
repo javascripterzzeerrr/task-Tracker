@@ -8,6 +8,7 @@ import {
     // addTimeSet,
     deleteTask,
     addDeleteFlag,
+    addShiftTask,
     updateShiftTask,
     deleteFlag,
 } from "../actions/index";
@@ -27,7 +28,7 @@ const task = createReducer(initialState, builder => {
         .addCase(initialUpdateTasks, (state, action) => {
             state.tasks = [];
             state.tasksTime =  [];
-            console.log("ACTION INITIAL FETCH ", action.payload);
+            // console.log("ACTION INITIAL FETCH ", action.payload);
                 action.payload.forEach(({ id, title, desc, starttime, donetime, count, color, shift, date }) => {
                     state.tasks.push({
                         id, 
@@ -46,7 +47,7 @@ const task = createReducer(initialState, builder => {
                         donetime,
                         count
                     })
-                    console.log("ADD TO TASKSTIMES ", state.tasksTime); 
+                    // console.log("ADD TO TASKSTIMES ", state.tasksTime);
                 }
             )
         })
@@ -105,7 +106,12 @@ const task = createReducer(initialState, builder => {
 
             // console.log("INDEX PAYLOAD ", action.payload.index);
         })
+        .addCase(addShiftTask, (state, action) => {
+            state.shiftTask = action.payload;
+        })
         .addCase(updateShiftTask, (state, action) => {
+            console.log("prev state SHIFT ", state.shiftTask);
+            console.log("action.payload SHIFT ", action.payload)
             state.shiftTask = state.shiftTask + action.payload;
             console.log("state.shiftTask + action.payload", state.shiftTask);
         })

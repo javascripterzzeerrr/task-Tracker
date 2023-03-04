@@ -1,15 +1,15 @@
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
-import { addTask, updateShiftTask, addTimeSet } from "../../actions/index";
+import { addTask, updateShiftTask } from "../../actions/index";
 
-import { shiftTask, uniqueTimes } from "../../selectors/index";
+import { shiftTask } from "../../selectors/index";
 
 import { v4 as uuidv4 } from 'uuid';
 
 import { transformDate } from "../../utils"; 
 
-import { addTaskAPI } from "../../http/taskAPI";
+import { addTaskAPI, addShiftDashboardsAPI } from "../../http/taskAPI";
 
 import randomColor from "../../utils/randomColor";
 import createDate from "../../utils/createDate";
@@ -26,8 +26,8 @@ const Modal = ({ updateIsActiveModal }) => {
   // const setTimes = useSelector(uniqueTimes);
   // console.log('Set Times ', setTimes);
 
-  console.log('starttime in set ', starttime);
-  console.log('donetime in set ', donetime);
+  // console.log('starttime in set ', starttime);
+  // console.log('donetime in set ', donetime);
 
   const dispatch = useDispatch();
 
@@ -45,6 +45,8 @@ const Modal = ({ updateIsActiveModal }) => {
       (Math.floor((transformDate(finishTimeDone) - transformDate(finishTimeStart)) / 1800) + 1);
 
       let color = randomColor();
+
+      console.log("COUNT ", count);
 
       dispatch(addTask({
         id: taskID,
@@ -67,6 +69,7 @@ const Modal = ({ updateIsActiveModal }) => {
         count,
         color,
         shift: shiftFromStore,
+        shiftDashboard: (shiftFromStore + count)
       });
 
       dispatch(updateShiftTask(count));

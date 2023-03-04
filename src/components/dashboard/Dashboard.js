@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 
 import * as taskSelectors from "../../selectors/index";
 
-import { initialUpdateTasks, startLoading, endLoading } from "../../actions";
+import { initialUpdateTasks, startLoading, endLoading, addShiftTask } from "../../actions";
 
 import Preview from "../preview/Preview";
 import Time from "../time/Time";
@@ -25,6 +25,9 @@ const Dashboard = () => {
   const tasks = useSelector(taskSelectors.tasksListSelector);
   const tasksTime = useSelector(taskSelectors.tasksTimeList);
   const rows = useSelector(taskSelectors.dashboardRows);
+  const shiftTest = useSelector(state => state.task.shiftTask)
+  
+  console.log("shiftTest ", shiftTest);
 
   const dispatch = useDispatch();
 
@@ -32,7 +35,10 @@ const Dashboard = () => {
     dispatch(startLoading())
     fetchTasksTimesAPI()
       .then(data => {
+          console.log(data)
+          console.log("data.data.dasboards.shifttask.at(-1).shifttask ", data.data.dashboards.at(-1).shifttask)
           dispatch(initialUpdateTasks(data.data.Tasks))
+          dispatch(addShiftTask(data.data.dashboards.at(-1).shifttask))
       })
       .catch(e => console.log(e))
     dispatch(endLoading())
@@ -42,8 +48,8 @@ const Dashboard = () => {
     gettingDataFromServer();
   }, []);
   
-  console.log("TASKS ", tasks);
-  console.log("tasksTime ", tasksTime);
+  // console.log("TASKS ", tasks);
+  // console.log("tasksTime ", tasksTime);
 
   const updateIsActiveModal = (bool) => {
     setIsActiveModal(bool);
@@ -51,21 +57,21 @@ const Dashboard = () => {
 
   const renderTask = useMemo(() => {
     return tasks.map((item, index) => {
-      console.log("TASKS MAP ", item);
+      // console.log("TASKS MAP ", item);
       return <Task key={item.id} {...item} index={index} />
     });
   }, [tasks]);
 
   const renderTimeList = useMemo(() => {
     return tasksTime.map(taskTime => {
-      console.log("taskTime MAP ", taskTime);
+      // console.log("taskTime MAP ", taskTime);
       return <Time key={taskTime.id} starttime={taskTime.starttime} donetime={taskTime.donetime} count={taskTime.count} />;
     });
   }, [tasksTime]);
 
   const content = tasks.length > 0 ? renderTask : null;
 
-  console.log("CONTENT ", content);
+  // console.log("CONTENT ", content);
 
   const timeList = tasksTime.length > 0 ? renderTimeList : null;
 

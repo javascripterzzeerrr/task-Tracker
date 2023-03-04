@@ -10,6 +10,7 @@ export const addTimeSet = createAction("ADD_TIME_SET");
 export const deleteTask = createAction("DELETE_TASK");
 export const addDeleteFlag = createAction("ADD_FLAG_DELETE");
 export const deleteFlag = createAction("FLAG_DELETE");
+export const addShiftTask = createAction("ADD_SHIFT_TASK");
 export const updateShiftTask = createAction("UPDATE_SHIFT_TASK");
 
 // dashboard
