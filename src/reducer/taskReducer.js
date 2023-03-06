@@ -10,6 +10,7 @@ import {
     addDeleteFlag,
     addShiftTask,
     updateShiftTask,
+    deleteShiftItem,
     deleteFlag,
 } from "../actions/index";
 
@@ -58,6 +59,7 @@ const task = createReducer(initialState, builder => {
             state.loading = false;
         })
         .addCase(addTask, (state, action) => {
+            console.log("NEED =====> ??????????????????????", state.shiftTask);
             state.tasks.push({...action.payload, shift: state.shiftTask});
             // state.shiftTask = state.shiftTask + action.payload.count;
             state.tasksTime.push({
@@ -80,7 +82,14 @@ const task = createReducer(initialState, builder => {
         .addCase(deleteFlag, (state) => {
             state.delTasksFlag = false;
         })
+        .addCase(deleteShiftItem, (state, action) => {
+            console.log("state.shiftTask ", state.shiftTask);
+            console.log("state.shiftTask - action.payload.count", state.shiftTask - action.payload.count);
+
+            state.shiftTask = state.shiftTask - action.payload.count;
+        })
         .addCase(deleteTask, (state, action) => {
+            console.log("STARTING DELETE SHIFT ", action.payload)
             state.delTasksFlag = false;
 
             // change propertie is shift
@@ -100,7 +109,6 @@ const task = createReducer(initialState, builder => {
             state.tasksTime = state.tasksTime.filter(taskTime => {
                 return taskTime.id !== action.payload.id;
             })
-            state.shiftTask = state.shiftTask - action.payload.count;
             // console.log("BEFORE ", state.deleteShift + action.payload.count);
             state.deleteShift = state.deleteShift + action.payload.count;
 

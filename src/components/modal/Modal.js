@@ -48,19 +48,21 @@ const Modal = ({ updateIsActiveModal }) => {
 
       console.log("COUNT ", count);
 
-      dispatch(addTask({
-        id: taskID,
-        title,
-        desc,
-        starttime: starttime,
-        donetime: donetime,
-        date: new Date(),
-        count,
-        color,
-        shift: shiftFromStore,
-      }));
+      // dispatch(addTask({
+      //   id: taskID,
+      //   title,
+      //   desc,
+      //   starttime: starttime,
+      //   donetime: donetime,
+      //   date: new Date(),
+      //   count,
+      //   color,
+      //   shift: shiftFromStore,
+      // }));
 
-      addTaskAPI({
+      console.log("MODAL ADDING TASK SHIFT shiftFromStore + count ", shiftFromStore + count)
+
+      const task = {
         title,
         desc,
         starttime: starttime,
@@ -70,9 +72,17 @@ const Modal = ({ updateIsActiveModal }) => {
         color,
         shift: shiftFromStore,
         shiftDashboard: (shiftFromStore + count)
-      });
+      }
 
-      dispatch(updateShiftTask(count));
+      console.log("ADDING NEW TASK IS NAME ", task.title);
+
+      addTaskAPI(task)
+          .then(date => {
+            console.log('ADD TASK DATA FROM SERVER ', date);
+            dispatch(addTask(date.data.task));
+          })
+          .then(dispatch(updateShiftTask(count)))
+          .catch(e => console.log(e))
 
       updateIsActiveModal(false);
     }

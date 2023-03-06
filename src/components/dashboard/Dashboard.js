@@ -25,23 +25,29 @@ const Dashboard = () => {
   const tasks = useSelector(taskSelectors.tasksListSelector);
   const tasksTime = useSelector(taskSelectors.tasksTimeList);
   const rows = useSelector(taskSelectors.dashboardRows);
-  const shiftTest = useSelector(state => state.task.shiftTask)
+  const shiftTest = useSelector(state => state.task.shiftTask);
   
-  console.log("shiftTest ", shiftTest);
+  console.log("state shiftTest ", shiftTest);
 
   const dispatch = useDispatch();
 
   const gettingDataFromServer = () => {
-    dispatch(startLoading())
+    dispatch(startLoading());
+    console.log("Reloading page");
     fetchTasksTimesAPI()
       .then(data => {
           console.log(data)
-          console.log("data.data.dasboards.shifttask.at(-1).shifttask ", data.data.dashboards.at(-1).shifttask)
+          console.log("THIS IS WILL BE SHIFT ", data.data.dashboards.at(-1).shifttask)
           dispatch(initialUpdateTasks(data.data.Tasks))
-          dispatch(addShiftTask(data.data.dashboards.at(-1).shifttask))
+
+          return data;
+      })
+      .then(data => {
+        console.log("next data ======== ", data)
+        dispatch(addShiftTask(data.data.dashboards.at(-1).shifttask))
       })
       .catch(e => console.log(e))
-    dispatch(endLoading())
+    dispatch(endLoading());
   }
 
   useEffect(() => {
@@ -57,7 +63,7 @@ const Dashboard = () => {
 
   const renderTask = useMemo(() => {
     return tasks.map((item, index) => {
-      // console.log("TASKS MAP ", item);
+      console.log("TASKS MAP ", item);
       return <Task key={item.id} {...item} index={index} />
     });
   }, [tasks]);
