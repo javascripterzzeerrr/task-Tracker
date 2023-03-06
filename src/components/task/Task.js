@@ -1,8 +1,10 @@
 import { useEffect, useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
-import { deleteTask, deleteFlag } from "../../actions/index";
+import { deleteTask, deleteFlag, deleteShiftItem } from "../../actions/index";
 import { changeFlagSelector, shiftTask } from "../../selectors/index";
+
+import { deleteTaskAPI } from "../../http/taskAPI";
 
 import styled from "styled-components";
 
@@ -21,13 +23,13 @@ const TaskWrapper = styled.div`
 `;
 
 const Task = ({ id, title, desc, color, count, shift, index }) => {
-  // console.log("INDEX in task ", index);
-  // console.log("TASK COUNT ROW", count);
   const isChangeFlag = useSelector(changeFlagSelector);
-  const shiftTaskItem = useSelector(shiftTask);
+  const shiftTaskItem = useSelector(state => state.task.shiftTask);
   // console.log("init shift ", shift);
   // console.log("shiftTaskItem ", shiftTaskItem);
   let newShift = Number(shift);
+
+  console.log("NEW SHIFT ", newShift);
 
   // console.log("ROWS SINCE ", shift, " => ", shift + count);
 
@@ -42,9 +44,24 @@ const Task = ({ id, title, desc, color, count, shift, index }) => {
     }
   }, [isChangeFlag]);
 
-  // useEffect(() => {
+  const deleteTaskOnClick = () => {
+    console.log("DELETE START");
 
-  // }, []);
+    console.log("shiftTaskItem BEFORE DELETE ", shiftTaskItem);
+
+    console.log("ID COUNT INDEX ", { id, count, index });
+
+    // console.log("DELETE FROM DB ID = ", id);
+    deleteTaskAPI(id)
+      .then(dispatch(deleteTask({ id, count, index })))
+      .then(dispatch(deleteShiftItem({ count })))
+      .then(response => console.log("RESPONSE FROM SERVER ", response))
+      .catch(e => console.log(e))
+    
+    console.log("shiftTaskItem AFTER DELETE ", shiftTaskItem);
+    
+    console.log("END DELETE");
+  }
 
   useEffect(() => {
     document.addEventListener('click', handleClickOutTask);
@@ -52,7 +69,7 @@ const Task = ({ id, title, desc, color, count, shift, index }) => {
     return () => document.removeEventListener('click', handleClickOutTask);
   }, [isChangeFlag, handleClickOutTask]);
 
-  console.log("NEW SHIFT ", newShift);
+  // console.log("NEW SHIFT ", newShift);
 
   return (
     <TaskWrapper count={count} rowsInit={newShift + 1} rows={newShift + count} >
@@ -66,9 +83,9 @@ const Task = ({ id, title, desc, color, count, shift, index }) => {
           </div>
         </div>
         {
-          isChangeFlag 
+          isChangeFlag
           ?
-          <img onClick={() => dispatch(deleteTask({ id, count, index }))} className="btn-close" src={trash} alt="trash" />
+          <img onClick={deleteTaskOnClick} className="btn-close" src={trash} alt="trash" />
           :
           null
         }

@@ -37,7 +37,7 @@ const Time = ({ starttime, donetime, count }) => {
 
     // dispatch(addTimeSet(halfHour));
 
-    console.log("halfHour ", halfHour);
+    // console.log("halfHour ", halfHour);
 
     return (
         <>

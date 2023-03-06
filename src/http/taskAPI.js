@@ -11,3 +11,9 @@ export const fetchTasksTimesAPI = async () => {
 
     return response;
 }
+
+export const deleteTaskAPI = async (id) => {
+    const response = await $host.delete(`api/task/delete/${id}`);
+
+    return response;
+}
