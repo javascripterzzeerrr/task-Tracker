@@ -7,11 +7,12 @@
     .content {
         display: flex;
         flex-direction: column;
-        overflow: auto;
 
         .task__name {
             font-size: 16px;
             font-weight: bold;
+            max-width: 200px;
+            word-break: break-all;
         }
     
         .task_desc {
@@ -19,6 +20,8 @@
             color: #747474; 
             font-size: 14px;
             flex: 1 1 auto;
+            max-width: 200px;
+            word-break: break-all;
         }
     
         .task__time {

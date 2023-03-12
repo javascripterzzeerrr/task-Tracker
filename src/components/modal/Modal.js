@@ -7,7 +7,7 @@ import { shiftTask } from "../../selectors/index";
 
 import { transformDate } from "../../utils";
 
-import { addTaskAPI, addShiftDashboardsAPI } from "../../http/taskAPI";
+import { addTaskAPI } from "../../http/taskAPI";
 
 import randomColor from "../../utils/randomColor";
 import createDate from "../../utils/createDate";
@@ -19,6 +19,9 @@ const Modal = ({ updateIsActiveModal }) => {
   const [desc, setDesc] = useState(null);
   const [starttime, setStartTime] = useState(null);
   const [donetime, setDoneTime] = useState(null);
+  const [dateForm, setDateForm] = useState(null);
+
+  const months = ["Jan", "Feb", "Mar", "Apr", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
 
   const shiftFromStore = useSelector(shiftTask);
 
@@ -38,6 +41,10 @@ const Modal = ({ updateIsActiveModal }) => {
 
       let color = randomColor();
 
+      let transformDateByForm = new Date(dateForm);
+
+      let dateTask = `${transformDateByForm.getDate()}` + `${months[transformDateByForm.getMonth()]}` + `${transformDateByForm.getFullYear()}`;
+
       const task = {
         title,
         desc,
@@ -47,13 +54,12 @@ const Modal = ({ updateIsActiveModal }) => {
         count,
         color,
         shift: shiftFromStore,
-        shiftDashboard: (shiftFromStore)
+        shiftDashboard: shiftFromStore,
+        dateId: dateTask
       }
 
       addTaskAPI(task)
           .then(date => {
-            console.log('start modal then 1')
-            console.log('ADD TASK DATA FROM SERVER ', date);
             dispatch(addTask(date.data.task));
           })
           .then(() => dispatch(updateShiftTask(count)))
@@ -77,6 +83,11 @@ const Modal = ({ updateIsActiveModal }) => {
         setDoneTime(inpStr);
       }
     }
+  }
+
+  const onUpdateDate = (e) => {
+    console.log(e.target.value);
+    setDateForm(e.target.value)
   }
 
   return (
@@ -119,6 +130,8 @@ const Modal = ({ updateIsActiveModal }) => {
             placeholder="Example 01:00"
             value={donetime}
           />
+          <label for="date">Дата: </label>
+          <input onChange={onUpdateDate} type="date" id="date" name="date" />
           <datalist id="cityname">
             <option value={2}></option>
             <option value={1}></option>
