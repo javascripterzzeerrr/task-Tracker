@@ -25,8 +25,6 @@ const TaskWrapper = styled.div`
 const Task = ({ id, title, desc, color, count, shift, index }) => {
   const isChangeFlag = useSelector(changeFlagSelector);
   const shiftTaskItem = useSelector(state => state.task.shiftTask);
-  // console.log("init shift ", shift);
-  // console.log("shiftTaskItem ", shiftTaskItem);
   let newShift = Number(shift);
 
   console.log("NEW SHIFT ", newShift);
@@ -56,9 +54,8 @@ const Task = ({ id, title, desc, color, count, shift, index }) => {
       .then(dispatch(deleteTask({ id, count, index })))
       .then(dispatch(deleteShiftItem({ count })))
       .then(response => console.log("RESPONSE FROM SERVER ", response))
+      .then(console.log("shiftTaskItem AFTER DELETE ", shiftTaskItem))
       .catch(e => console.log(e))
-    
-    console.log("shiftTaskItem AFTER DELETE ", shiftTaskItem);
     
     console.log("END DELETE");
   }
