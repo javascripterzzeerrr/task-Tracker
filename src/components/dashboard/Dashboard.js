@@ -20,35 +20,38 @@ import { fetchTasksTimesAPI } from "../../http/taskAPI";
 
 import "./dashboard.scss";
 
+const monthsList = ["Jan", "Feb", "Mar", "Apr", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+
 const Dashboard = () => {
   const [isActiveModal, setIsActiveModal] = useState(false);
   const tasks = useSelector(taskSelectors.tasksListSelector);
   const tasksTime = useSelector(taskSelectors.tasksTimeList);
   const rows = useSelector(taskSelectors.dashboardRows);
-  const shiftTest = useSelector(state => state.task.shiftTask);
-  
-  console.log("state shiftTest ", shiftTest);
+
+  const day = useSelector(taskSelectors.dateDay);
+  const week = useSelector(taskSelectors.daysWeek);
+  const month = useSelector(taskSelectors.dateMonth);
+  const year = useSelector(taskSelectors.dateYear);
 
   const dispatch = useDispatch();
 
   const gettingDataFromServer = () => {
     dispatch(startLoading());
-    console.log("Reloading page");
     fetchTasksTimesAPI()
       .then(data => {
-          console.log(data)
-          console.log("THIS IS WILL BE SHIFT ", data.data.dashboards.at(-1).shifttask)
           dispatch(initialUpdateTasks(data.data.Tasks))
 
           return data;
       })
       .then(data => {
-        console.log("next data ======== ", data);
-        console.log("Dispatching data ====> ", data.data.dashboards.at(-1).shifttask);
         dispatch(addShiftTask(data.data.dashboards.at(-1).shifttask))
       })
       .catch(e => console.log(e))
     dispatch(endLoading());
+  }
+
+  const gettinTaskByDate = () => {
+    
   }
 
   useEffect(() => {
@@ -61,27 +64,36 @@ const Dashboard = () => {
 
   const renderTask = useMemo(() => {
     return tasks.map((item, index) => {
-      console.log("TASKS MAP ", item);
       return <Task key={item.id} {...item} index={index} />
     });
   }, [tasks]);
 
   const renderTimeList = useMemo(() => {
     return tasksTime.map(taskTime => {
-      // console.log("taskTime MAP ", taskTime);
       return <Time key={taskTime.id} starttime={taskTime.starttime} donetime={taskTime.donetime} count={taskTime.count} />;
     });
   }, [tasksTime]);
 
+  const listDate = useMemo(() => {
+    let listDate = [];
+
+    if (day + 7 <= 31) {
+      for (let i = 0; i < 7; ++i) {
+        listDate.push(<Date dateCurrent={`${day + i},` + ` ${week}`} />)
+      }
+    }
+
+    return listDate;
+  }, [day, week, month, year]);
+
   const content = tasks.length > 0 ? renderTask : null;
-
-  // console.log("CONTENT ", content);
-
+  
   const timeList = tasksTime.length > 0 ? renderTimeList : null;
+  const dateList = listDate;
 
   return (
     <main>
-      <Preview/>
+      <Preview startDay={day} startMon={monthsList[month]} endDay={day + 7} endMon={monthsList[month]} />
       <GridWrapper rows={rows}>
         <Tools updateIsActiveModal={updateIsActiveModal} />
         {
@@ -92,13 +104,7 @@ const Dashboard = () => {
           null
         }
 
-        <Date dateCurrent={"7, Mon"} />
-        <Date dateCurrent={"8, Tue"} />
-        <Date dateCurrent={"9, Wed"} />
-        <Date dateCurrent={"10, Thu"} />
-        <Date dateCurrent={"11, Fri"} />
-        <Date dateCurrent={"12, Sat"} />
-        <Date dateCurrent={"13, Sun"} />
+        {dateList}
         
         <Column rows={rows} rowsInit={2} number={0}>
           <Grid rows={rows/2}>

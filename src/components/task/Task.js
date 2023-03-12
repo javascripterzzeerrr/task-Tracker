@@ -2,7 +2,7 @@ import { useEffect, useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 import { deleteTask, deleteFlag, deleteShiftItem } from "../../actions/index";
-import { changeFlagSelector, shiftTask } from "../../selectors/index";
+import { changeFlagSelector } from "../../selectors/index";
 
 import { deleteTaskAPI } from "../../http/taskAPI";
 
@@ -19,17 +19,13 @@ const TaskWrapper = styled.div`
   margin: 8px 0;
   display: flex;
   justify-content: space-between;
+  overflow: hidden;
   grid-row: row ${props => props.rowsInit} / row ${props => props.rows + 1};
 `;
 
-const Task = ({ id, title, desc, color, count, shift, index }) => {
+const Task = ({ id, title, desc, color, count, shift, index, starttime, donetime }) => {
   const isChangeFlag = useSelector(changeFlagSelector);
-  const shiftTaskItem = useSelector(state => state.task.shiftTask);
   let newShift = Number(shift);
-
-  console.log("NEW SHIFT ", newShift);
-
-  // console.log("ROWS SINCE ", shift, " => ", shift + count);
 
   const dispatch = useDispatch();
 
@@ -43,21 +39,10 @@ const Task = ({ id, title, desc, color, count, shift, index }) => {
   }, [isChangeFlag]);
 
   const deleteTaskOnClick = () => {
-    console.log("DELETE START");
-
-    console.log("shiftTaskItem BEFORE DELETE ", shiftTaskItem);
-
-    console.log("ID COUNT INDEX ", { id, count, index });
-
-    // console.log("DELETE FROM DB ID = ", id);
     deleteTaskAPI(id)
       .then(dispatch(deleteTask({ id, count, index })))
       .then(dispatch(deleteShiftItem({ count })))
-      .then(response => console.log("RESPONSE FROM SERVER ", response))
-      .then(console.log("shiftTaskItem AFTER DELETE ", shiftTaskItem))
       .catch(e => console.log(e))
-    
-    console.log("END DELETE");
   }
 
   useEffect(() => {
@@ -65,8 +50,6 @@ const Task = ({ id, title, desc, color, count, shift, index }) => {
 
     return () => document.removeEventListener('click', handleClickOutTask);
   }, [isChangeFlag, handleClickOutTask]);
-
-  // console.log("NEW SHIFT ", newShift);
 
   return (
     <TaskWrapper count={count} rowsInit={newShift + 1} rows={newShift + count} >
@@ -76,7 +59,7 @@ const Task = ({ id, title, desc, color, count, shift, index }) => {
             <div className="task_desc">
               { desc }
             </div>
-            <div className="task__time">{/*Number(doneTime.getHours()) - Number(createdAt.getHours())*/}</div>
+            <div className="task__time">{starttime + " - " + donetime}</div>
           </div>
         </div>
         {

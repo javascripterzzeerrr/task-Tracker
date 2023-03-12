@@ -3,12 +3,13 @@ import { configureStore } from "@reduxjs/toolkit";
 
 import task from "../reducer/taskReducer";
 import dashboard from "../reducer/dashboardReducer";
+import date from "../reducer/dateReducer";
 
 // enableMapSet();
 
 // ???
 const store = configureStore({
-  reducer: { task, dashboard },
+  reducer: { task, dashboard, date },
   middleware: getDefaultMiddleware => getDefaultMiddleware(),
   devTools: process.env.NODE_ENV !== 'production',
 })

@@ -17,3 +17,9 @@ export const deleteShiftItem = createAction("DELETE_SHIFT_ITEM");
 // dashboard
 export const addDashboardRows = createAction("ADD_DASHBOARD_ROW");
 export const dateListAction = createAction("DATE_LIST");
+
+// date
+export const initialDate = createAction("INIT_DATE");
+export const updateDaysWeek = createAction("UPDATE_DAYSWEEK");
+export const updateDay = createAction("UPDATE_DAY");
+export const updateMonth = createAction("UPDATE_MONTH");
