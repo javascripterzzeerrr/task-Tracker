@@ -5,9 +5,7 @@ import { addTask, updateShiftTask } from "../../actions/index";
 
 import { shiftTask } from "../../selectors/index";
 
-import { v4 as uuidv4 } from 'uuid';
-
-import { transformDate } from "../../utils"; 
+import { transformDate } from "../../utils";
 
 import { addTaskAPI, addShiftDashboardsAPI } from "../../http/taskAPI";
 
@@ -23,17 +21,11 @@ const Modal = ({ updateIsActiveModal }) => {
   const [donetime, setDoneTime] = useState(null);
 
   const shiftFromStore = useSelector(shiftTask);
-  // const setTimes = useSelector(uniqueTimes);
-  // console.log('Set Times ', setTimes);
-
-  // console.log('starttime in set ', starttime);
-  // console.log('donetime in set ', donetime);
 
   const dispatch = useDispatch();
 
   const adding = () => {
     if (title.length > 1 && starttime && donetime) {
-      const taskID = uuidv4();
 
       const finishTimeStart = createDate(starttime);
       const finishTimeDone = createDate(donetime);
@@ -46,22 +38,6 @@ const Modal = ({ updateIsActiveModal }) => {
 
       let color = randomColor();
 
-      console.log("COUNT ", count);
-
-      // dispatch(addTask({
-      //   id: taskID,
-      //   title,
-      //   desc,
-      //   starttime: starttime,
-      //   donetime: donetime,
-      //   date: new Date(),
-      //   count,
-      //   color,
-      //   shift: shiftFromStore,
-      // }));
-
-      console.log("MODAL ADDING TASK SHIFT shiftFromStore + count ", shiftFromStore + count)
-
       const task = {
         title,
         desc,
@@ -71,17 +47,16 @@ const Modal = ({ updateIsActiveModal }) => {
         count,
         color,
         shift: shiftFromStore,
-        shiftDashboard: (shiftFromStore + count)
+        shiftDashboard: (shiftFromStore)
       }
-
-      console.log("ADDING NEW TASK IS NAME ", task.title);
 
       addTaskAPI(task)
           .then(date => {
+            console.log('start modal then 1')
             console.log('ADD TASK DATA FROM SERVER ', date);
             dispatch(addTask(date.data.task));
           })
-          .then(dispatch(updateShiftTask(count)))
+          .then(() => dispatch(updateShiftTask(count)))
           .catch(e => console.log(e))
 
       updateIsActiveModal(false);

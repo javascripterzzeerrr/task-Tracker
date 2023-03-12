@@ -43,7 +43,8 @@ const Dashboard = () => {
           return data;
       })
       .then(data => {
-        console.log("next data ======== ", data)
+        console.log("next data ======== ", data);
+        console.log("Dispatching data ====> ", data.data.dashboards.at(-1).shifttask);
         dispatch(addShiftTask(data.data.dashboards.at(-1).shifttask))
       })
       .catch(e => console.log(e))
@@ -53,9 +54,6 @@ const Dashboard = () => {
   useEffect(() => {
     gettingDataFromServer();
   }, []);
-  
-  // console.log("TASKS ", tasks);
-  // console.log("tasksTime ", tasksTime);
 
   const updateIsActiveModal = (bool) => {
     setIsActiveModal(bool);

@@ -86,7 +86,7 @@ const task = createReducer(initialState, builder => {
             console.log("state.shiftTask ", state.shiftTask);
             console.log("state.shiftTask - action.payload.count", state.shiftTask - action.payload.count);
 
-            state.shiftTask = state.shiftTask - action.payload.count;
+            state.shiftTask = (state.shiftTask - action.payload.count) <= 0 ? 0 : (state.shiftTask - action.payload.count);
         })
         .addCase(deleteTask, (state, action) => {
             console.log("STARTING DELETE SHIFT ", action.payload)
